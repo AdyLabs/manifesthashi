@@ -255,7 +255,7 @@ function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boole
   for (const g of sc.rings) {
     const k = easeOut(clamp01((T - g.t) / 0.9)); if (k <= 0) continue;
     ctx.save(); ctx.globalAlpha = g.alpha; ctx.translate(g.x, g.y); ctx.rotate(-Math.PI / 2);
-    ctx.lineWidth = Math.max(1.6, g.r * 0.028);
+    ctx.lineWidth = Math.max(2.6, g.r * 0.045);
     ctx.shadowColor = "rgba(30,200,218,.55)"; ctx.shadowBlur = glow ? 6 : 0;
     for (let i = 0; i < g.n; i++) {
       ctx.strokeStyle = i % 2 ? "#a6eee0" : "#1ec8da";
