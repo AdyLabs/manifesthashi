@@ -8,6 +8,7 @@ import { Shop } from "./components/Shop";
 import type { Filter } from "./components/Shop";
 import { QuickView } from "./components/QuickView";
 import { Commissions } from "./components/Commissions";
+import { Lace } from "./components/Lace";
 import type { Prefill } from "./components/Commissions";
 import { pieces, store } from "./data";
 import type { Piece } from "./data";
@@ -20,6 +21,8 @@ function Footer() {
     setVisits(v);
   }, []);
   return (
+    <>
+    <Lace className="relative z-10 -mb-[22px]" />
     <footer className="border-t border-line bg-espresso">
       <div className="wrap grid gap-5 pb-[calc(32px+env(safe-area-inset-bottom,0px))] pt-8">
         <div className="flex flex-wrap items-baseline justify-between gap-4">
@@ -35,6 +38,7 @@ function Footer() {
         </div>
       </div>
     </footer>
+    </>
   );
 }
 
@@ -73,8 +77,11 @@ export default function App() {
       <TopBar saved={saved.size} />
       <main>
         <Hero pair={[pieces[0], pieces[1]]} onOpen={setOpen} vines={vines} />
+        <Lace className="relative z-10 -my-[22px]" />
         <Shop pieces={pieces} filter={filter} setFilter={setFilter} saved={saved} toggle={toggle} onOpen={setOpen} />
+        <Lace className="relative z-10 -mb-[10px]" />
         <div className="plaid h-[56px] border-y border-black shadow-[0_-1px_0_rgba(201,209,216,.12),0_1px_0_rgba(201,209,216,.12)]" aria-hidden="true" />
+        <Lace className="relative z-10 -mt-[10px]" />
         <Commissions prefill={prefill} />
       </main>
       <Footer />

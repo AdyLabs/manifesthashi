@@ -188,7 +188,7 @@ function decorate(scene: Scene, W: number, H: number, narrow: boolean, s: number
     if (p) scene.rings.push({ x: p[0], y: p[1], r, n: 3, t: when(), alpha: 0.45 + R() * 0.3 });
   }
   // the giant corner flower, sitting in front of the bottom-left spiral like the reference
-  scene.blooms.push({ x: W * 0.01, y: H * 1.02, r: (narrow ? 95 : 150) * s, rot: -0.35, col: "#bcf8f5", t: end * 0.55, alpha: 1, giant: true });
+  scene.blooms.push({ x: W * (narrow ? 0.08 : 0.066), y: H * (narrow ? 0.97 : 0.875), r: (narrow ? 95 : 150) * s, rot: -0.35, col: "#bcf8f5", t: end * 0.55, alpha: 1, giant: true });
   for (let i = 0; i < (narrow ? 4 : 10); i++) {
     const r = (5 + R() * 15) * s, p = spot((x, y) => clear(x, y, r + 8));
     if (p) scene.disks.push({ x: p[0], y: p[1], r, t: when(), alpha: 0.4 + R() * 0.35 });
@@ -274,8 +274,66 @@ function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boole
     ctx.bezierCurveTo(L * 0.12, -w * 1.15, L * 0.78, -w * 1.05, L, -w * 0.08);
     ctx.bezierCurveTo(L * 0.72, w * 0.62, L * 0.22, w * 0.7, 0, 0);
   };
+  // the giant corner flower is a stargazer-style lily, from Sal's reference: six long narrow
+  // tepals with ruffled edges and a slight bend, silver-white throat fading to dark teal tips, a
+  // pale stripe down each, dark speckles, curved stamens with dark pill anthers, a long pistil
+  const stargazer = (b: Bloom, k: number) => {
+    const L = b.r * 1.3 * k;
+    const spots = rng(77);
+    ctx.save(); ctx.globalAlpha = b.alpha; ctx.translate(b.x, b.y); ctx.rotate(b.rot + (1 - k) * 0.6);
+    for (let p = 0; p < 6; p++) {
+      const Lp = L * (p % 2 ? 0.9 : 1), w = Lp * 0.15, bend = (p % 2 ? -1 : 1) * 0.1;
+      ctx.save(); ctx.rotate((p / 6) * Math.PI * 2 + (p % 2 ? 0.08 : 0));
+      const edge = (side: number, u: number) => {
+        const hw = w * Math.pow(Math.sin(Math.PI * Math.min(1, u * 1.05)), 0.75) * (1 - 0.3 * u);
+        const ruffle = u > 0.25 ? 1 + 0.14 * Math.sin(u * 22 + side) : 1;
+        return [u * Lp, bend * Lp * u * u + side * hw * ruffle] as const;
+      };
+      const path = new Path2D();
+      path.moveTo(0, 0);
+      for (let i = 1; i <= 40; i++) { const [x, y] = edge(-1, i / 40); path.lineTo(x, y); }
+      for (let i = 40; i >= 0; i--) { const [x, y] = edge(1, i / 40); path.lineTo(x, y); }
+      path.closePath();
+      const g = ctx.createLinearGradient(0, 0, Lp, 0);
+      g.addColorStop(0, "#eaf7f6"); g.addColorStop(0.14, "#bfe6e4"); g.addColorStop(0.34, "#2fa3a0");
+      g.addColorStop(0.7, "#0b5557"); g.addColorStop(1, "#06302f");
+      liftShadow(ctx, b.r * 0.05);
+      ctx.fillStyle = g; ctx.fill(path);
+      noShadow(ctx);
+      ctx.strokeStyle = "rgba(4,40,42,.65)"; ctx.lineWidth = 1.1; ctx.stroke(path);
+      // pale centre stripe
+      ctx.strokeStyle = "rgba(242,251,250,.5)"; ctx.lineWidth = Math.max(1.2, w * 0.16);
+      ctx.beginPath(); ctx.moveTo(Lp * 0.05, 0);
+      ctx.quadraticCurveTo(Lp * 0.4, bend * Lp * 0.16, Lp * 0.72, bend * Lp * 0.52); ctx.stroke();
+      // speckles, denser toward the middle of the tepal
+      ctx.fillStyle = "rgba(6,47,48,.72)";
+      for (let i = 0; i < 34; i++) {
+        const u = 0.14 + spots() * 0.62, v = (spots() * 2 - 1) * 0.75;
+        if (Math.abs(v) < 0.14) continue;
+        const [, yTop] = edge(-1, u), [, yBot] = edge(1, u), mid = (yTop + yBot) / 2;
+        ctx.beginPath(); ctx.arc(u * Lp, mid + v * (yBot - yTop) / 2, Lp * (0.006 + spots() * 0.011), 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
+    }
+    // stamens and pistil
+    for (let p = 0; p < 6; p++) {
+      const an = (p / 6) * Math.PI * 2 + Math.PI / 6, sl = L * (0.5 + (p % 3) * 0.06), bendA = 0.25;
+      const ex = Math.cos(an) * sl, ey = Math.sin(an) * sl;
+      ctx.strokeStyle = "rgba(223,243,241,.9)"; ctx.lineWidth = Math.max(1, b.r * 0.012);
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.quadraticCurveTo(Math.cos(an + bendA) * sl * 0.55, Math.sin(an + bendA) * sl * 0.55, ex, ey); ctx.stroke();
+      ctx.fillStyle = "#0a3436";
+      ctx.beginPath(); ctx.ellipse(ex, ey, L * 0.07, L * 0.017, an + 0.9, 0, Math.PI * 2); ctx.fill();
+    }
+    const pa = 0.5, pl = L * 0.62;
+    ctx.strokeStyle = "rgba(233,250,248,.95)"; ctx.lineWidth = Math.max(1.4, b.r * 0.018);
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.quadraticCurveTo(Math.cos(pa - 0.2) * pl * 0.5, Math.sin(pa - 0.2) * pl * 0.5, Math.cos(pa) * pl, Math.sin(pa) * pl); ctx.stroke();
+    ctx.fillStyle = "#e9faf8";
+    ctx.beginPath(); ctx.arc(Math.cos(pa) * pl, Math.sin(pa) * pl, Math.max(2, b.r * 0.03), 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  };
   for (const b of sc.blooms) {
     const k = easeOut(clamp01((T - b.t) / (b.giant ? 1.1 : 0.8))); if (k <= 0) continue;
+    if (b.giant) { stargazer(b, k); continue; }
     const L = b.r * k, w = b.r * 0.42 * k, n = b.giant ? 6 : 5;
     ctx.save(); ctx.globalAlpha = b.alpha; ctx.translate(b.x, b.y); ctx.rotate(b.rot + (1 - k) * 0.7);
     const fill = ctx.createRadialGradient(0, 0, L * 0.05, 0, 0, L);

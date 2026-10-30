@@ -42,6 +42,7 @@ src/
     TopBar.tsx         sticky old-browser bar: address field follows the section, year rolls 2026 to 2008
     Hero.tsx           chrome wordmark, two tilted paintings, scroll-linked drift
     Halftone.tsx       teal halftone dot field fading into black (static canvas)
+    Lace.tsx           teal lace trim tile drawn once to a data URL; horizontal bands and vertical ribbons
     Vines.tsx          generative canvas vines (seeded), exposes seek(p); boot.ts grows them once, then they hold still
     Shop.tsx           filter tabs (All, Figures, Abstract, Saved) and the two-up grid
     QuickView.tsx      painting viewer in an old-OS window, prev/next, save, "Ask about this piece"
@@ -61,6 +62,8 @@ design/
   text `#e9f2f2`, muted `#93abac`.
 - **Halftone** (`components/Halftone.tsx`): teal dot fields that shrink into the black, in the hero corners and one
   corner each of the shop and commissions sections. Static, drawn once.
+- **Lace trim** (`components/Lace.tsx`, Sal's lace-ribbon reference, our own drawing): bands under the hero, on both
+  edges of the plaid, over the footer; vertical ribbons either side of the shop grid on desktop.
 - **Shape lock:** painting frames are square-cornered (they are canvases). Controls (buttons, inputs, tabs) use 6px.
   Windows use 8px. Icon-only buttons are circles. Nothing else gets a radius.
 - **Glow is rationed** to the wordmark, the year counter and the vines.

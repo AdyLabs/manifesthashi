@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { HeartIcon } from "@phosphor-icons/react";
 import type { Piece } from "../data";
 import { Halftone } from "./Halftone";
+import { Lace } from "./Lace";
 import { APPLE_IN_OUT, CSS_EASE, DUR, STAGGER } from "../motion";
 
 export type Filter = "all" | "figure" | "abstract" | "saved";
@@ -73,6 +74,8 @@ export function Shop({
   return (
     <section id="shop" aria-labelledby="shopTitle" className="relative overflow-hidden">
       <Halftone at={[-0.04, -0.08]} reach={0.4} alpha={0.45} />
+      <Lace orient="y" className="absolute bottom-0 top-0 left-[calc(50%-450px)] hidden lg:block" />
+      <Lace orient="y" className="absolute bottom-0 top-0 left-[calc(50%+406px)] hidden lg:block" />
       <div className="wrap relative py-14 md:py-20">
       <div className="mx-auto max-w-[760px]">
       <div className="flex flex-wrap items-end justify-between gap-4">
