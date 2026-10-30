@@ -1,0 +1,46 @@
+[
+  {
+    "id": "melt",
+    "title": "Melt",
+    "category": "figure",
+    "medium": "Acrylic on canvas",
+    "tag": "just in",
+    "status": "available",
+    "price": "Inquire",
+    "image": "melt.jpg",
+    "alt": "A yellow faceless figure with two long dark eye shapes, red paint dripping from the chin, on a deep indigo background."
+  },
+  {
+    "id": "pour",
+    "title": "Pour No. 1",
+    "category": "abstract",
+    "medium": "Acrylic on canvas",
+    "tag": "just in",
+    "status": "available",
+    "price": "Inquire",
+    "image": "pour.jpg",
+    "alt": "Outlined, dripping shapes in mustard, orange, pink and purple over dark green streaks, with white flecks."
+  },
+  {
+    "id": "candy",
+    "title": "Candy Static",
+    "category": "abstract",
+    "medium": "Acrylic and glitter on canvas",
+    "tag": "original",
+    "status": "available",
+    "price": "Inquire",
+    "image": "candy-static.jpg",
+    "alt": "Thick neon blobs, rings and dots in pink, orange, yellow, blue and green on a white square canvas, with glitter accents."
+  },
+  {
+    "id": "bluehour",
+    "title": "Blue Hour",
+    "category": "figure",
+    "medium": "Acrylic on canvas",
+    "tag": "in progress",
+    "status": "wip",
+    "price": "Coming soon",
+    "image": "blue-hour.jpg",
+    "alt": "An orange silhouette of a figure seen from behind, blocked in on a bright blue canvas."
+  }
+]

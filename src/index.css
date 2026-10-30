@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  manifesthashi design rules
+  - Theme lock: one dark world (the brief's scene-era inspo is dark). color-scheme: dark.
+  - Accent lock: cyan only. Aqua is cyan's light tint, chrome is the metal neutral.
+  - Shape lock: artwork frames are square-cornered (canvas). Controls (buttons, inputs, tabs) use 6px.
+    Windows use 8px. Icon-only buttons are circles. Nothing else gets a radius.
+  - Glow is reserved for three things: the wordmark, the year counter, the vines.
+*/
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+    --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  }
+  html { scroll-behavior: smooth; scroll-padding-top: 96px; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: #07090b;
+    color: #e9f2f1;
+    font-family: "Silkscreen", ui-monospace, "Courier New", monospace; /* option 7, site-wide */
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+    z-index: 40; background: #15100e;
+  }
+  h1, h2, h3 { text-wrap: balance; }
+  :focus-visible { outline: 2px solid #a6eee0; outline-offset: 3px; }
+  ::selection { background: #1ec8da; color: #03191c; }
+  input::placeholder, textarea::placeholder { color: #6f8687; opacity: 1; }
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+}
+
+@layer components {
+  .wrap {
+    max-width: 1180px; margin-inline: auto;
+    padding-left: var(--gutter-l); padding-right: var(--gutter-r);
+  }
+
+  /* hero wordmark: the same glossy cyan as .btn-gloss ("Shop the work"), lit from behind */
+  .chrome-text {
+    /* first layer is the arrival gleam: parked off the right edge, swept once by boot.ts via --gleam */
+    background:
+      linear-gradient(100deg, transparent 43%, rgba(255,255,255,.75) 47%, #ffffff 50%, rgba(255,255,255,.75) 53%, transparent 57%) var(--gleam, 0%) 0 / 300% 100% no-repeat,
+      linear-gradient(180deg, #86eef5 0%, #34d4e3 48%, #0fa3b3 52%, #1bbfd0 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 22px rgba(30, 200, 218, 0.32)) drop-shadow(0 2px 0 #020303);
+  }
+
+  /* Web 2.0 glossy primary */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 46px; padding: 0 20px; border-radius: 6px; white-space: nowrap;
+    font-family: "Silkscreen", ui-monospace, "Courier New", monospace; /* logo canvas option 7, same as the year counter */
+    font-weight: 700; font-size: 14px; letter-spacing: 0; line-height: 1; text-decoration: none; cursor: pointer;
+    transition: transform 160ms cubic-bezier(.16,1,.3,1), filter 160ms ease;
+  }
+  .btn:hover { filter: brightness(1.07); transform: translateY(-1px); }
+  .btn:active { transform: translateY(1px) scale(0.985); }
+  .btn-gloss {
+    color: #03191c; border: 1px solid #08606a;
+    background: linear-gradient(#86eef5 0%, #34d4e3 48%, #0fa3b3 52%, #1bbfd0 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.75), 0 0 0 1px rgba(2,6,7,.6), 0 10px 22px -10px rgba(14,95,105,.9);
+    text-shadow: 0 1px 0 rgba(255,255,255,.35);
+  }
+  .btn-chrome {
+    color: #0b1214; border: 1px solid #5d676e;
+    background: linear-gradient(#fbfcfd 0%, #d9dfe3 48%, #aab4bb 52%, #e3e8eb 100%);
+    box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(2,6,7,.6), 0 10px 22px -12px rgba(0,0,0,.9);
+  }
+  .orb {
+    display: grid; place-items: center; border-radius: 9999px; color: #0b1214;
+    background: linear-gradient(#ffffff, #d3dade 50%, #a9b4bb 51%, #e9edf0);
+    border: 1px solid #4c565c; box-shadow: inset 0 1px 0 #fff, 0 6px 14px -6px rgba(0,0,0,.8);
+  }
+  .orb-on {
+    color: #03191c; border-color: #08606a;
+    background: linear-gradient(#86eef5, #34d4e3 48%, #0fa3b3 52%, #1bbfd0);
+  }
+
+  /* gallery wall behind each canvas */
+  .wall {
+    background: radial-gradient(70% 55% at 50% 38%, #164a51 0%, #0c2327 55%, #070d0f 100%);
+  }
+  .canvas-shadow {
+    filter: drop-shadow(0 22px 22px rgba(0,0,0,.6)) drop-shadow(0 2px 3px rgba(0,0,0,.55));
+  }
+
+  /* teal tartan: wide teal sett, dark crossing bands, thin aqua overcheck */
+  .plaid {
+    background:
+      repeating-linear-gradient(90deg, transparent 0 25px, rgba(166,238,224,.85) 25px 27px, transparent 27px 56px),
+      repeating-linear-gradient(0deg, transparent 0 25px, rgba(166,238,224,.85) 25px 27px, transparent 27px 56px),
+      repeating-linear-gradient(90deg, rgba(3,25,28,.6) 0 10px, transparent 10px 42px, rgba(3,25,28,.6) 42px 46px, transparent 46px 56px),
+      repeating-linear-gradient(0deg, rgba(3,25,28,.6) 0 10px, transparent 10px 42px, rgba(3,25,28,.6) 42px 46px, transparent 46px 56px),
+      repeating-linear-gradient(90deg, rgba(30,200,218,.55) 0 18px, transparent 18px 56px),
+      repeating-linear-gradient(0deg, rgba(30,200,218,.55) 0 18px, transparent 18px 56px),
+      #0e7480;
+  }
+
+  /* old-OS window chrome */
+  .titlebar {
+    background: linear-gradient(180deg, #3ad7e6 0%, #139fb0 45%, #0b7f8d 55%, #0e5f69 100%);
+    border-bottom: 1px solid #020303;
+  }
+  .winbtn {
+    width: 22px; height: 20px; border-radius: 4px; display: grid; place-items: center; color: #0b1214;
+    background: linear-gradient(#fff, #cfd6db 50%, #aeb8bf 51%, #e4e8eb); border: 1px solid #054047;
+  }
+  .winbtn-close { color: #fff; background: linear-gradient(#ffb3a8, #e2553f 50%, #c63b26 51%, #ee7a63); }
+
+  .field {
+    width: 100%; min-width: 0; color: #e9f2f1; font: 400 15px/1.5 "Silkscreen", ui-monospace, "Courier New", monospace;
+    background: #050809; border: 1px solid #2c3d41; border-radius: 6px; padding: 11px 12px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.7);
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+  .field:focus { outline: none; border-color: #1ec8da; box-shadow: 0 0 0 3px rgba(30,200,218,.25), inset 0 1px 3px rgba(0,0,0,.7); }
+  .field[aria-invalid="true"] { border-color: #ff9a86; }
+  select.field {
+    appearance: none; padding-right: 36px;
+    background-image: linear-gradient(45deg, transparent 50%, #a6eee0 50%), linear-gradient(135deg, #a6eee0 50%, transparent 50%);
+    background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+    background-size: 5px 5px; background-repeat: no-repeat;
+  }
+  input[type="file"].field { padding: 8px; font-size: 14px; color: #93abac; }
+  input[type="file"].field::file-selector-button {
+    font: 700 12px "Silkscreen", ui-monospace, monospace; margin-right: 10px; padding: 7px 12px; border-radius: 6px; cursor: pointer;
+    border: 1px solid #5d676e; color: #0b1214; background: linear-gradient(#fbfcfd, #d9dfe3 48%, #aab4bb 52%, #e3e8eb);
+  }
+  .ph {
+    font-family: "Silkscreen", ui-monospace, monospace; font-size: 12px; font-weight: 400; color: #a6eee0;
+    border: 1px dashed rgba(166,238,224,.55); border-radius: 6px; padding: 2px 6px; white-space: nowrap;
+  }
+}
+
+@keyframes twinkle { 0%,100% { opacity: .15; transform: scale(.6) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(45deg); } }
+@keyframes blink { 50% { opacity: .3; } }
