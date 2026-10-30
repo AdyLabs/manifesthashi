@@ -4,6 +4,7 @@ import type { VinesHandle } from "../boot";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { Vines } from "./Vines";
 import { Halftone } from "./Halftone";
+import { TitleFrame } from "./TitleFrame";
 import { APPLE_IN_OUT, CSS_EASE, DUR, STAGGER } from "../motion";
 import type { Piece } from "../data";
 
@@ -60,6 +61,7 @@ export function Hero({ pair, onOpen, vines }: { pair: [Piece, Piece]; onOpen: (p
       />
       <div className="wrap relative grid items-center gap-10 pb-14 pt-12 md:pb-20 md:pt-16 lg:grid-cols-[1.05fr_1fr] lg:gap-8 lg:pb-24 lg:pt-20">
         <div className="min-w-0">
+          <TitleFrame className="mt-10 md:mt-14">
           <motion.h1
             id="mark"
             data-boot="mark"
@@ -70,6 +72,7 @@ export function Hero({ pair, onOpen, vines }: { pair: [Piece, Piece]; onOpen: (p
             <Sparkle className="right-[-3%] top-[6%] h-3.5 w-3.5" delay={0} />
             <Sparkle className="bottom-[18%] left-[40%] h-2.5 w-2.5" delay={1.6} />
           </motion.h1>
+          </TitleFrame>
           <motion.p {...up(1)} className="mb-7 mt-4 max-w-[30ch] text-[1rem] leading-relaxed text-ink [text-shadow:0_1px_14px_#000] md:text-[1.1rem]">
             Paintings by Sal. Every piece exists once. Take one home, or have her paint one for you.
           </motion.p>

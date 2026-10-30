@@ -182,11 +182,11 @@ function decorate(scene: Scene, W: number, H: number, narrow: boolean, s: number
     }
   }
   // rings within rings: two big ones in the corners, small ones throughout
-  const big = (narrow ? 92 : 165) * s;
+  const big = (narrow ? 118 : 205) * s;
   scene.rings.push({ x: W * 0.985, y: H * 0.04, r: big, n: 7, t: end * 0.4, alpha: 0.6 });
   scene.rings.push({ x: W * 0.015, y: H * 0.96, r: big, n: 7, t: end * 0.5, alpha: 0.6, front: true }); // drawn over the giant flower (Sal)
   for (let i = 0; i < (narrow ? 8 : 12); i++) {
-    const r = (6 + R() * 8) * s, p = spot((x, y) => clear(x, y, r + 6) && Math.hypot(x - W * 0.985, y - H * 0.04) > big + r && Math.hypot(x - W * 0.015, y - H * 0.96) > big + r);
+    const r = (10 + R() * 12) * s, p = spot((x, y) => clear(x, y, r + 6) && Math.hypot(x - W * 0.985, y - H * 0.04) > big + r && Math.hypot(x - W * 0.015, y - H * 0.96) > big + r);
     if (p) scene.rings.push({ x: p[0], y: p[1], r, n: 3, t: when(), alpha: 0.45 + R() * 0.3 });
   }
   // the giant corner flower, sitting in front of the bottom-left spiral like the reference

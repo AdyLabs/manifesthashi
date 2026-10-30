@@ -42,6 +42,7 @@ src/
     TopBar.tsx         sticky old-browser bar: address field follows the section, year rolls 2026 to 2008
     Hero.tsx           chrome wordmark, two tilted paintings, scroll-linked drift
     Halftone.tsx       teal halftone dot field fading into black (static canvas)
+    TitleFrame.tsx     flower frame around the wordmark: centred scroll divider above the name, end flowers, corner buds
     Lace.tsx           teal lace trim tile drawn once to a data URL; horizontal bands and vertical ribbons
     Vines.tsx          generative canvas vines (seeded), exposes seek(p); boot.ts grows them once, then they hold still
     Shop.tsx           filter tabs (All, Figures, Abstract, Saved) and the two-up grid
