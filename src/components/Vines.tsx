@@ -25,7 +25,7 @@ type Stroke = { pts: [number, number, number][]; start: number; dur: number; col
 type Leaf = { x: number; y: number; ang: number; L: number; col: string; t: number; alpha: number };
 type Bloom = { x: number; y: number; r: number; rot: number; col: string; t: number; alpha: number; giant?: boolean };
 type Dot = { x: number; y: number; r: number; col: string; t: number; alpha: number };
-type Ring = { x: number; y: number; r: number; n: number; t: number; alpha: number };
+type Ring = { x: number; y: number; r: number; n: number; t: number; alpha: number; front?: boolean };
 type Disk = { x: number; y: number; r: number; t: number; alpha: number };
 type Star = { x: number; y: number; r: number; t: number; alpha: number };
 type Scene = { strokes: Stroke[]; leaves: Leaf[]; blooms: Bloom[]; dots: Dot[]; rings: Ring[]; disks: Disk[]; stars: Star[]; end: number };
@@ -182,7 +182,7 @@ function decorate(scene: Scene, W: number, H: number, narrow: boolean, s: number
   // rings within rings: two big ones in the corners, small ones throughout
   const big = (narrow ? 92 : 165) * s;
   scene.rings.push({ x: W * 0.985, y: H * 0.04, r: big, n: 7, t: end * 0.4, alpha: 0.6 });
-  scene.rings.push({ x: W * 0.015, y: H * 0.96, r: big, n: 7, t: end * 0.5, alpha: 0.6 });
+  scene.rings.push({ x: W * 0.015, y: H * 0.96, r: big, n: 7, t: end * 0.5, alpha: 0.6, front: true }); // drawn over the giant flower (Sal)
   for (let i = 0; i < (narrow ? 5 : 12); i++) {
     const r = (6 + R() * 8) * s, p = spot((x, y) => clear(x, y, r + 6) && Math.hypot(x - W * 0.985, y - H * 0.04) > big + r && Math.hypot(x - W * 0.015, y - H * 0.96) > big + r);
     if (p) scene.rings.push({ x: p[0], y: p[1], r, n: 3, t: when(), alpha: 0.45 + R() * 0.3 });
@@ -252,8 +252,8 @@ function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boole
     ctx.beginPath(); ctx.ellipse(-r * 0.25, -r * 0.42, r * 0.5, r * 0.26, -0.3, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
   }
-  for (const g of sc.rings) {
-    const k = easeOut(clamp01((T - g.t) / 0.9)); if (k <= 0) continue;
+  const drawRing = (g: Ring) => {
+    const k = easeOut(clamp01((T - g.t) / 0.9)); if (k <= 0) return;
     ctx.save(); ctx.globalAlpha = g.alpha; ctx.translate(g.x, g.y); ctx.rotate(-Math.PI / 2);
     ctx.lineWidth = Math.max(2.6, g.r * 0.045);
     ctx.shadowColor = "rgba(12,196,187,.55)"; ctx.shadowBlur = glow ? 6 : 0;
@@ -264,7 +264,8 @@ function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boole
     noShadow(ctx);
     ctx.fillStyle = "#a2f2ee"; ctx.beginPath(); ctx.arc(0, 0, Math.max(1.5, g.r * 0.08) * k, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
-  }
+  };
+  for (const g of sc.rings) if (!g.front) drawRing(g);
   // flowers in the style of Sal's reference: broad pointed petals with a slight pinwheel twist,
   // dark teal at the throat fading to pale mint at the edge, a soft glow, a pale centre and long
   // stamens with dot tips. The giant corner flower adds a second petal layer and dark streaks.
@@ -316,6 +317,7 @@ function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boole
     ctx.beginPath(); ctx.arc(0, 0, Math.max(2, b.r * 0.1), 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     ctx.restore();
   }
+  for (const g of sc.rings) if (g.front) drawRing(g);
   for (const st of sc.stars) {
     const k = easeOut(clamp01((T - st.t) / 0.5)); if (k <= 0) continue;
     const r = st.r * k;
