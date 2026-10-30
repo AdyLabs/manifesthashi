@@ -95,3 +95,6 @@ GitHub Pages via `.github/workflows/deploy.yml` (repo Settings → Pages → Sou
 runs `check:paintings`, builds, and publishes `dist/` to https://adylabs.github.io/manifesthashi/. Paths are relative,
 so the project subpath works. README.md has the non-developer guide for adding paintings; keep it in step with any
 change to the paintings.json fields.
+
+**Pushing:** Muhammad's standing instruction (Oct 30, 2026): commit and push every change to `main` (which deploys it)
+without asking first, unless he says not to for that change. Check the deploy run's result after each push.
