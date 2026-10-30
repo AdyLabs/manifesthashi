@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { HeartIcon } from "@phosphor-icons/react";
 import type { Piece } from "../data";
+import { Halftone } from "./Halftone";
 import { APPLE_IN_OUT, CSS_EASE, DUR, STAGGER } from "../motion";
 
 export type Filter = "all" | "figure" | "abstract" | "saved";
@@ -24,7 +25,7 @@ function Card({ p, i, saved, onToggle, onOpen }: { p: Piece; i: number; saved: b
       transition={{ duration: DUR, delay: (i % 2) * STAGGER, ease: CSS_EASE, layout: { duration: 0.7, ease: APPLE_IN_OUT } }}
       className="flex min-w-0 flex-col"
     >
-      <div className="wall relative aspect-[4/5] w-full max-w-full overflow-hidden border border-[#1b2b2f]">
+      <div className="wall relative aspect-[4/5] w-full max-w-full overflow-hidden border border-[#1a302f]">
         <button
           type="button"
           onClick={onOpen}
@@ -70,7 +71,9 @@ export function Shop({
   const shown = pieces.filter((p) => (filter === "all" ? true : filter === "saved" ? saved.has(p.id) : p.category === filter));
 
   return (
-    <section id="shop" aria-labelledby="shopTitle" className="wrap py-14 md:py-20">
+    <section id="shop" aria-labelledby="shopTitle" className="relative overflow-hidden">
+      <Halftone at={[-0.04, -0.08]} reach={0.4} alpha={0.45} />
+      <div className="wrap relative py-14 md:py-20">
       <div className="mx-auto max-w-[760px]">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <h2 id="shopTitle" className="m-0 font-display text-[clamp(1.7rem,4.6vw,2.5rem)] font-bold leading-[1.05]">New arrivals</h2>
@@ -115,6 +118,7 @@ export function Shop({
           )}
         </AnimatePresence>
       </motion.div>
+      </div>
       </div>
     </section>
   );

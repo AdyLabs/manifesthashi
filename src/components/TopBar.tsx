@@ -47,7 +47,7 @@ export function TopBar({ saved }: { saved: number }) {
           <span className="truncate"><span data-boot="scheme">{reduce ? "http://www." : "https://"}</span><b className="font-normal text-aqua">manifesthashi</b>.com/{path}</span>
           <span className="ml-auto flex shrink-0 items-baseline gap-1.5">
             <span className="hidden lg:inline">now browsing in</span>
-            <span data-boot="year" className="min-w-[4ch] text-[13px] tabular-nums text-cyan [text-shadow:0_0_8px_rgba(30,200,218,.6)]">{reduce ? 2008 : 2026}</span>
+            <span data-boot="year" className="min-w-[4ch] text-[13px] tabular-nums text-cyan [text-shadow:0_0_8px_rgba(12,196,187,.6)]">{reduce ? 2008 : 2026}</span>
           </span>
         </div>
         <div className="order-2 ml-auto md:order-none md:ml-0">{links}</div>

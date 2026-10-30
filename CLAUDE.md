@@ -41,6 +41,7 @@ src/
   components/
     TopBar.tsx         sticky old-browser bar: address field follows the section, year rolls 2026 to 2008
     Hero.tsx           chrome wordmark, two tilted paintings, scroll-linked drift
+    Halftone.tsx       teal halftone dot field fading into black (static canvas)
     Vines.tsx          generative canvas vines (seeded), exposes seek(p); boot.ts grows them once, then they hold still
     Shop.tsx           filter tabs (All, Figures, Abstract, Saved) and the two-up grid
     QuickView.tsx      painting viewer in an old-OS window, prev/next, save, "Ask about this piece"
@@ -54,8 +55,12 @@ design/
 ## Design rules (keep these)
 
 - **One dark theme**, set on purpose. `color-scheme: dark`. No light sections mid-page.
-- **One accent: cyan** `#1ec8da`. Aqua `#a6eee0` is its light tint. Chrome `#c9d1d8` is the metal neutral.
-  Other colors: void `#07090b`, espresso `#15100e`, abyss `#0b2e33`, text `#e9f2f1`, muted `#93abac`.
+- **One accent: teal** `#0cc4bb` (hue 177, sampled from Sal's halftone reference, Oct 30; replaced the earlier cyan
+  `#1ec8da`). Every cyan-family shade was moved to hue 177 at its old lightness. Aqua `#a2f2ee` is the light tint,
+  deep `#079a93`, abyss `#093533`. Chrome `#c9d1d8` is the metal neutral. Void `#07090b`, espresso `#15100e`,
+  text `#e9f2f2`, muted `#93abac`.
+- **Halftone** (`components/Halftone.tsx`): teal dot fields that shrink into the black, in the hero corners and one
+  corner each of the shop and commissions sections. Static, drawn once.
 - **Shape lock:** painting frames are square-cornered (they are canvases). Controls (buttons, inputs, tabs) use 6px.
   Windows use 8px. Icon-only buttons are circles. Nothing else gets a radius.
 - **Glow is rationed** to the wordmark, the year counter and the vines.

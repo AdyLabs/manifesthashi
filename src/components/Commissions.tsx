@@ -3,6 +3,7 @@ import type { FormEvent, ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { CheckIcon, CopyIcon, PencilSimpleIcon, SkullIcon } from "@phosphor-icons/react";
 import { steps, tiers } from "../data";
+import { Halftone } from "./Halftone";
 import { APPLE_IN_OUT, CSS_EASE, DUR } from "../motion";
 
 export type Prefill = { type: string; idea: string; nonce: number } | null;
@@ -84,11 +85,12 @@ export function Commissions({ prefill }: { prefill: Prefill }) {
   });
 
   return (
-    <section id="commissions" aria-labelledby="commTitle" className="bg-gradient-to-b from-espresso to-void to-70% py-16 md:py-24">
-      <div className="wrap grid gap-12 lg:grid-cols-[5fr_6fr] lg:items-start lg:gap-14">
+    <section id="commissions" aria-labelledby="commTitle" className="relative overflow-hidden bg-gradient-to-b from-espresso to-void to-70% py-16 md:py-24">
+      <Halftone at={[1.04, 1.06]} reach={0.4} alpha={0.45} />
+      <div className="wrap relative grid gap-12 lg:grid-cols-[5fr_6fr] lg:items-start lg:gap-14">
         <div className="min-w-0">
           <p className="m-0 mb-4 inline-flex items-center gap-2.5 font-pixel text-[12px] text-ink">
-            <SkullIcon size={18} weight="fill" className="animate-[blink_1.8s_steps(2)_infinite] text-cyan [filter:drop-shadow(0_0_6px_#1ec8da)]" aria-hidden="true" />
+            <SkullIcon size={18} weight="fill" className="animate-[blink_1.8s_steps(2)_infinite] text-cyan [filter:drop-shadow(0_0_6px_#0cc4bb)]" aria-hidden="true" />
             commissions open
           </p>
           <h2 id="commTitle" className="m-0 font-display text-[clamp(1.7rem,4.4vw,2.4rem)] font-bold leading-[1.1]">Get something painted for you</h2>
@@ -125,12 +127,12 @@ export function Commissions({ prefill }: { prefill: Prefill }) {
           whileInView={{ y: 0, scale: 1 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: DUR, ease: CSS_EASE }}
-          className="min-w-0 overflow-hidden rounded-win border border-black bg-[#0c1517] shadow-[0_0_0_1px_#33464b,0_30px_60px_-20px_rgba(0,0,0,.9)]"
+          className="min-w-0 overflow-hidden rounded-win border border-black bg-[#0b1817] shadow-[0_0_0_1px_#324c4b,0_30px_60px_-20px_rgba(0,0,0,.9)]"
           role="region"
           aria-label="Commission request form"
         >
           <div className="titlebar flex items-center justify-between gap-3 py-1.5 pl-3 pr-2">
-            <span className="truncate font-pixel text-[12px] text-white [text-shadow:0_1px_0_#064b53]">commission_request.exe</span>
+            <span className="truncate font-pixel text-[12px] text-white [text-shadow:0_1px_0_#025753]">commission_request.exe</span>
             <div className="flex shrink-0 gap-1" aria-hidden="true">
               <span className="winbtn"><span className="mb-1 block h-[2px] w-2 self-end bg-current" /></span>
               <span className="winbtn"><span className="block h-2 w-2 border-[1.5px] border-current" /></span>
@@ -198,7 +200,7 @@ export function Commissions({ prefill }: { prefill: Prefill }) {
                   initial={reduce ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={reduce ? undefined : { opacity: 0 }} transition={{ duration: 0.7, ease: APPLE_IN_OUT }}>
                   <p className="m-0 font-pixel text-[12px] text-aqua">request ready</p>
                   <p className="m-0">Copy this and send it to Sal at <span className="ph">sal's email or @handle</span> so she has everything in one message.</p>
-                  <pre ref={preRef} className="m-0 max-h-[260px] overflow-auto whitespace-pre-wrap break-words rounded-ctl border border-[#2c3d41] bg-[#050809] p-3 font-display text-[12px] leading-relaxed text-aqua">{summary}</pre>
+                  <pre ref={preRef} className="m-0 max-h-[260px] overflow-auto whitespace-pre-wrap break-words rounded-ctl border border-[#2b4241] bg-[#050909] p-3 font-display text-[12px] leading-relaxed text-aqua">{summary}</pre>
                   <div className="flex flex-wrap gap-3">
                     <button type="button" className="btn btn-gloss" onClick={copy}>
                       {copied === "copied" ? <CheckIcon size={18} weight="bold" aria-hidden="true" /> : <CopyIcon size={18} aria-hidden="true" />}

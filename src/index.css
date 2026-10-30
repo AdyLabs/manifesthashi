@@ -21,7 +21,7 @@
   body {
     margin: 0;
     background: #07090b;
-    color: #e9f2f1;
+    color: #e9f2f2;
     font-family: "Silkscreen", ui-monospace, "Courier New", monospace; /* option 7, site-wide */
     font-size: 15px;
     line-height: 1.6;
@@ -33,8 +33,8 @@
     z-index: 40; background: #15100e;
   }
   h1, h2, h3 { text-wrap: balance; }
-  :focus-visible { outline: 2px solid #a6eee0; outline-offset: 3px; }
-  ::selection { background: #1ec8da; color: #03191c; }
+  :focus-visible { outline: 2px solid #a2f2ee; outline-offset: 3px; }
+  ::selection { background: #0cc4bb; color: #021d1c; }
   input::placeholder, textarea::placeholder { color: #6f8687; opacity: 1; }
   [hidden] { display: none !important; }
   @media (prefers-reduced-motion: reduce) {
@@ -54,9 +54,9 @@
     /* first layer is the arrival gleam: parked off the right edge, swept once by boot.ts via --gleam */
     background:
       linear-gradient(100deg, transparent 43%, rgba(255,255,255,.75) 47%, #ffffff 50%, rgba(255,255,255,.75) 53%, transparent 57%) var(--gleam, 0%) 0 / 300% 100% no-repeat,
-      linear-gradient(180deg, #86eef5 0%, #34d4e3 48%, #0fa3b3 52%, #1bbfd0 100%);
+      linear-gradient(180deg, #80fbf4 0%, #2bece2 48%, #079a93 52%, #12d9cf 100%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
-    filter: drop-shadow(0 0 22px rgba(30, 200, 218, 0.32)) drop-shadow(0 2px 0 #020303);
+    filter: drop-shadow(0 0 22px rgba(12,196,187, 0.32)) drop-shadow(0 2px 0 #020303);
   }
 
   /* Web 2.0 glossy primary */
@@ -70,29 +70,29 @@
   .btn:hover { filter: brightness(1.07); transform: translateY(-1px); }
   .btn:active { transform: translateY(1px) scale(0.985); }
   .btn-gloss {
-    color: #03191c; border: 1px solid #08606a;
-    background: linear-gradient(#86eef5 0%, #34d4e3 48%, #0fa3b3 52%, #1bbfd0 100%);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.75), 0 0 0 1px rgba(2,6,7,.6), 0 10px 22px -10px rgba(14,95,105,.9);
+    color: #021d1c; border: 1px solid #036f6a;
+    background: linear-gradient(#80fbf4 0%, #2bece2 48%, #079a93 52%, #12d9cf 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.75), 0 0 0 1px rgba(2,7,7,.6), 0 10px 22px -10px rgba(9,110,105,.9);
     text-shadow: 0 1px 0 rgba(255,255,255,.35);
   }
   .btn-chrome {
-    color: #0b1214; border: 1px solid #5d676e;
+    color: #0b1414; border: 1px solid #5d676e;
     background: linear-gradient(#fbfcfd 0%, #d9dfe3 48%, #aab4bb 52%, #e3e8eb 100%);
-    box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(2,6,7,.6), 0 10px 22px -12px rgba(0,0,0,.9);
+    box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(2,7,7,.6), 0 10px 22px -12px rgba(0,0,0,.9);
   }
   .orb {
-    display: grid; place-items: center; border-radius: 9999px; color: #0b1214;
+    display: grid; place-items: center; border-radius: 9999px; color: #0b1414;
     background: linear-gradient(#ffffff, #d3dade 50%, #a9b4bb 51%, #e9edf0);
     border: 1px solid #4c565c; box-shadow: inset 0 1px 0 #fff, 0 6px 14px -6px rgba(0,0,0,.8);
   }
   .orb-on {
-    color: #03191c; border-color: #08606a;
-    background: linear-gradient(#86eef5, #34d4e3 48%, #0fa3b3 52%, #1bbfd0);
+    color: #021d1c; border-color: #036f6a;
+    background: linear-gradient(#80fbf4, #2bece2 48%, #079a93 52%, #12d9cf);
   }
 
   /* gallery wall behind each canvas */
   .wall {
-    background: radial-gradient(70% 55% at 50% 38%, #164a51 0%, #0c2327 55%, #070d0f 100%);
+    background: radial-gradient(70% 55% at 50% 38%, #135451 0%, #0b2827 55%, #070f0f 100%);
   }
   .canvas-shadow {
     filter: drop-shadow(0 22px 22px rgba(0,0,0,.6)) drop-shadow(0 2px 3px rgba(0,0,0,.55));
@@ -101,48 +101,48 @@
   /* teal tartan: wide teal sett, dark crossing bands, thin aqua overcheck */
   .plaid {
     background:
-      repeating-linear-gradient(90deg, transparent 0 25px, rgba(166,238,224,.85) 25px 27px, transparent 27px 56px),
-      repeating-linear-gradient(0deg, transparent 0 25px, rgba(166,238,224,.85) 25px 27px, transparent 27px 56px),
-      repeating-linear-gradient(90deg, rgba(3,25,28,.6) 0 10px, transparent 10px 42px, rgba(3,25,28,.6) 42px 46px, transparent 46px 56px),
-      repeating-linear-gradient(0deg, rgba(3,25,28,.6) 0 10px, transparent 10px 42px, rgba(3,25,28,.6) 42px 46px, transparent 46px 56px),
-      repeating-linear-gradient(90deg, rgba(30,200,218,.55) 0 18px, transparent 18px 56px),
-      repeating-linear-gradient(0deg, rgba(30,200,218,.55) 0 18px, transparent 18px 56px),
-      #0e7480;
+      repeating-linear-gradient(90deg, transparent 0 25px, rgba(162,242,238,.85) 25px 27px, transparent 27px 56px),
+      repeating-linear-gradient(0deg, transparent 0 25px, rgba(162,242,238,.85) 25px 27px, transparent 27px 56px),
+      repeating-linear-gradient(90deg, rgba(2,29,28,.6) 0 10px, transparent 10px 42px, rgba(2,29,28,.6) 42px 46px, transparent 46px 56px),
+      repeating-linear-gradient(0deg, rgba(2,29,28,.6) 0 10px, transparent 10px 42px, rgba(2,29,28,.6) 42px 46px, transparent 46px 56px),
+      repeating-linear-gradient(90deg, rgba(12,196,187,.55) 0 18px, transparent 18px 56px),
+      repeating-linear-gradient(0deg, rgba(12,196,187,.55) 0 18px, transparent 18px 56px),
+      #08867f;
   }
 
   /* old-OS window chrome */
   .titlebar {
-    background: linear-gradient(180deg, #3ad7e6 0%, #139fb0 45%, #0b7f8d 55%, #0e5f69 100%);
+    background: linear-gradient(180deg, #31efe5 0%, #0bb8af 45%, #04948c 55%, #096e69 100%);
     border-bottom: 1px solid #020303;
   }
   .winbtn {
-    width: 22px; height: 20px; border-radius: 4px; display: grid; place-items: center; color: #0b1214;
-    background: linear-gradient(#fff, #cfd6db 50%, #aeb8bf 51%, #e4e8eb); border: 1px solid #054047;
+    width: 22px; height: 20px; border-radius: 4px; display: grid; place-items: center; color: #0b1414;
+    background: linear-gradient(#fff, #cfd6db 50%, #aeb8bf 51%, #e4e8eb); border: 1px solid #024a47;
   }
   .winbtn-close { color: #fff; background: linear-gradient(#ffb3a8, #e2553f 50%, #c63b26 51%, #ee7a63); }
 
   .field {
-    width: 100%; min-width: 0; color: #e9f2f1; font: 400 15px/1.5 "Silkscreen", ui-monospace, "Courier New", monospace;
-    background: #050809; border: 1px solid #2c3d41; border-radius: 6px; padding: 11px 12px;
+    width: 100%; min-width: 0; color: #e9f2f2; font: 400 15px/1.5 "Silkscreen", ui-monospace, "Courier New", monospace;
+    background: #050909; border: 1px solid #2b4241; border-radius: 6px; padding: 11px 12px;
     box-shadow: inset 0 1px 3px rgba(0,0,0,.7);
     transition: border-color 160ms ease, box-shadow 160ms ease;
   }
-  .field:focus { outline: none; border-color: #1ec8da; box-shadow: 0 0 0 3px rgba(30,200,218,.25), inset 0 1px 3px rgba(0,0,0,.7); }
+  .field:focus { outline: none; border-color: #0cc4bb; box-shadow: 0 0 0 3px rgba(12,196,187,.25), inset 0 1px 3px rgba(0,0,0,.7); }
   .field[aria-invalid="true"] { border-color: #ff9a86; }
   select.field {
     appearance: none; padding-right: 36px;
-    background-image: linear-gradient(45deg, transparent 50%, #a6eee0 50%), linear-gradient(135deg, #a6eee0 50%, transparent 50%);
+    background-image: linear-gradient(45deg, transparent 50%, #a2f2ee 50%), linear-gradient(135deg, #a2f2ee 50%, transparent 50%);
     background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
     background-size: 5px 5px; background-repeat: no-repeat;
   }
   input[type="file"].field { padding: 8px; font-size: 14px; color: #93abac; }
   input[type="file"].field::file-selector-button {
     font: 700 12px "Silkscreen", ui-monospace, monospace; margin-right: 10px; padding: 7px 12px; border-radius: 6px; cursor: pointer;
-    border: 1px solid #5d676e; color: #0b1214; background: linear-gradient(#fbfcfd, #d9dfe3 48%, #aab4bb 52%, #e3e8eb);
+    border: 1px solid #5d676e; color: #0b1414; background: linear-gradient(#fbfcfd, #d9dfe3 48%, #aab4bb 52%, #e3e8eb);
   }
   .ph {
-    font-family: "Silkscreen", ui-monospace, monospace; font-size: 12px; font-weight: 400; color: #a6eee0;
-    border: 1px dashed rgba(166,238,224,.55); border-radius: 6px; padding: 2px 6px; white-space: nowrap;
+    font-family: "Silkscreen", ui-monospace, monospace; font-size: 12px; font-weight: 400; color: #a2f2ee;
+    border: 1px dashed rgba(162,242,238,.55); border-radius: 6px; padding: 2px 6px; white-space: nowrap;
   }
 }
 

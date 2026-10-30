@@ -30,7 +30,7 @@ function Footer() {
         </div>
         <div className="flex flex-wrap gap-2">
           {["best viewed at 1024×768", "© 2026 manifesthashi"].map((b) => (
-            <span key={b} className="rounded-[2px] border border-[#39454a] bg-gradient-to-b from-[#141b1d] to-[#0a0e0f] px-2 py-1 font-pixel text-[10px] text-chrome">{b}</span>
+            <span key={b} className="rounded-[2px] border border-[#39454a] bg-gradient-to-b from-[#141d1d] to-[#0a0f0f] px-2 py-1 font-pixel text-[10px] text-chrome">{b}</span>
           ))}
         </div>
       </div>

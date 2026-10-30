@@ -18,15 +18,15 @@ export function QuickView({
   return (
     <Dialog.Root open={!!piece} onOpenChange={(o) => !o && onClose()}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-[rgba(3,6,7,.84)] backdrop-blur-[3px] duration-500 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-[rgba(3,7,7,.84)] backdrop-blur-[3px] duration-500 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
         <Dialog.Content
           onKeyDown={(e) => { if (e.key === "ArrowRight") go(1); if (e.key === "ArrowLeft") go(-1); }}
-          className="fixed left-1/2 top-1/2 z-50 max-h-[calc(100dvh-24px)] w-[min(1000px,calc(100vw-24px))] -translate-x-1/2 -translate-y-1/2 overflow-auto rounded-win border border-black bg-[#0b1214] text-ink shadow-[0_0_0_1px_#33464b,0_40px_80px_rgba(0,0,0,.8)] focus:outline-none duration-500 [animation-timing-function:cubic-bezier(.42,0,.58,1)] data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-[0.97]"
+          className="fixed left-1/2 top-1/2 z-50 max-h-[calc(100dvh-24px)] w-[min(1000px,calc(100vw-24px))] -translate-x-1/2 -translate-y-1/2 overflow-auto rounded-win border border-black bg-[#0b1414] text-ink shadow-[0_0_0_1px_#324c4b,0_40px_80px_rgba(0,0,0,.8)] focus:outline-none duration-500 [animation-timing-function:cubic-bezier(.42,0,.58,1)] data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-[0.97]"
         >
           {piece && (
             <>
               <div className="titlebar flex items-center justify-between gap-3 py-1.5 pl-3 pr-2">
-                <span className="truncate font-pixel text-[12px] text-white [text-shadow:0_1px_0_#064b53]">{piece.file}</span>
+                <span className="truncate font-pixel text-[12px] text-white [text-shadow:0_1px_0_#025753]">{piece.file}</span>
                 <div className="flex shrink-0 gap-1">
                   <span className="winbtn" aria-hidden="true"><span className="mb-1 block h-[2px] w-2 self-end bg-current" /></span>
                   <Dialog.Close className="winbtn winbtn-close cursor-pointer" aria-label="Close">

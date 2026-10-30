@@ -58,7 +58,7 @@ function build(W: number, H: number): Scene {
 
     // alternating leaves along the first 80%
     let side = R() < 0.5 ? 1 : -1;
-    const leafGap = col === "#0f5560" ? 70 : 26;
+    const leafGap = col === "#0b6460" ? 70 : 26;
     for (let i = Math.floor(n * 0.1); i < n * 0.8; i += Math.floor((leafGap + R() * 22) / step)) {
       const [px, py] = pts[i];
       const prev = pts[Math.max(0, i - 1)];
@@ -92,11 +92,11 @@ function build(W: number, H: number): Scene {
     }
     if (bloomTip) {
       const [px, py] = pts[pts.length - 1];
-      scene.blooms.push({ x: px, y: py, r: (7 + R() * 5) * s, rot: R() * Math.PI, col: "#a6eee0", t: start + dur, alpha });
+      scene.blooms.push({ x: px, y: py, r: (7 + R() * 5) * s, rot: R() * Math.PI, col: "#a2f2ee", t: start + dur, alpha });
     }
   };
 
-  const deep = "#0f5560", cyan = "#1ec8da", aqua = "#a6eee0";
+  const deep = "#0b6460", cyan = "#0cc4bb", aqua = "#a2f2ee";
   // back layer: long, faint
   grow(W * 1.03, H * 0.98, -2.6, Math.max(W, H) * 0.95, -1, 7 * s, 2, deep, narrow ? 0.35 : 0.55, 0, false);
   grow(W * 0.58, -H * 0.04, 1.8, H * 1.15, 1, 5 * s, 1, deep, narrow ? 0.3 : 0.5, 0.15, false);
@@ -136,23 +136,23 @@ function decorate(scene: Scene, W: number, H: number, narrow: boolean, s: number
   // stems, spaced so neighbours never pile up
   const roomFor = (x: number, y: number, r: number) => scene.blooms.every((b) => Math.hypot(b.x - x, b.y - y) > (b.r + r) * 0.85);
   for (const st of [...scene.strokes]) {
-    const back = st.col === "#0f5560"; // faint back-layer vines get flowers too, so the left side isn't bare
+    const back = st.col === "#0b6460"; // faint back-layer vines get flowers too, so the left side isn't bare
     const [tx, ty] = st.pts[st.pts.length - 1];
     const tr = (back ? 26 : 32) * s + R() * 10 * s;
     if (roomFor(tx, ty, tr)) {
-      scene.blooms.push({ x: tx, y: ty, r: tr, rot: R() * Math.PI, col: "#a6eee0", t: st.start + st.dur, alpha: Math.min(1, st.alpha * 1.25) });
+      scene.blooms.push({ x: tx, y: ty, r: tr, rot: R() * Math.PI, col: "#a2f2ee", t: st.start + st.dur, alpha: Math.min(1, st.alpha * 1.25) });
     }
     const i = Math.floor(st.pts.length * (0.3 + R() * 0.5));
     const [x, y] = st.pts[i], r = (24 + R() * 10) * s;
     if (R() < 0.7 && clear(x, y, r * 0.6) && roomFor(x, y, r)) {
-      scene.blooms.push({ x, y, r, rot: R() * Math.PI, col: "#bff5ea", t: st.start + (i / st.pts.length) * st.dur, alpha: Math.min(1, st.alpha * 1.25) });
+      scene.blooms.push({ x, y, r, rot: R() * Math.PI, col: "#bcf8f5", t: st.start + (i / st.pts.length) * st.dur, alpha: Math.min(1, st.alpha * 1.25) });
     }
   }
   // a few standalone flowers in the open space the vines don't reach (top band, bottom middle,
   // the gap between copy and paintings), so flowers sit across the whole hero like the reference
   for (let i = 0; i < (narrow ? 2 : 5); i++) {
     const r = (28 + R() * 10) * s, p = spot((x, y) => clear(x, y, r * 0.9) && roomFor(x, y, r * 1.4));
-    if (p) scene.blooms.push({ x: p[0], y: p[1], r, rot: R() * Math.PI, col: "#bff5ea", t: when(), alpha: 0.9 });
+    if (p) scene.blooms.push({ x: p[0], y: p[1], r, rot: R() * Math.PI, col: "#bcf8f5", t: when(), alpha: 0.9 });
   }
   // each flower branches out: two wavy tendrils that curl into a spiral, with a pair of leaves
   for (const b of [...scene.blooms]) {
@@ -170,12 +170,12 @@ function decorate(scene: Scene, W: number, H: number, narrow: boolean, s: number
         pts.push([x, y, Math.max(0.6, 1.6 * s * (1 - t * 0.7))]);
       }
       const t0 = b.t + 0.15, dur = len / (320 * s);
-      scene.strokes.push({ pts, start: t0, dur, col: "#a6eee0", alpha: b.alpha * 0.85 });
+      scene.strokes.push({ pts, start: t0, dur, col: "#a2f2ee", alpha: b.alpha * 0.85 });
       scene.end = Math.max(scene.end, t0 + dur);
       for (const [f, side] of [[0.3, 1], [0.55, -1]] as const) {
         const i = Math.floor(n * f), [px, py] = pts[i], prev = pts[Math.max(0, i - 1)];
         const ang = Math.atan2(py - prev[1], px - prev[0]);
-        scene.leaves.push({ x: px, y: py, ang: ang + side * dir * 0.9, L: (8 + R() * 5) * s, col: "#1ec8da", t: t0 + f * dur, alpha: b.alpha });
+        scene.leaves.push({ x: px, y: py, ang: ang + side * dir * 0.9, L: (8 + R() * 5) * s, col: "#0cc4bb", t: t0 + f * dur, alpha: b.alpha });
       }
     }
   }
@@ -188,7 +188,7 @@ function decorate(scene: Scene, W: number, H: number, narrow: boolean, s: number
     if (p) scene.rings.push({ x: p[0], y: p[1], r, n: 3, t: when(), alpha: 0.45 + R() * 0.3 });
   }
   // the giant corner flower, sitting in front of the bottom-left spiral like the reference
-  scene.blooms.push({ x: W * 0.01, y: H * 1.02, r: (narrow ? 95 : 150) * s, rot: -0.35, col: "#bff5ea", t: end * 0.55, alpha: 1, giant: true });
+  scene.blooms.push({ x: W * 0.01, y: H * 1.02, r: (narrow ? 95 : 150) * s, rot: -0.35, col: "#bcf8f5", t: end * 0.55, alpha: 1, giant: true });
   for (let i = 0; i < (narrow ? 4 : 10); i++) {
     const r = (5 + R() * 15) * s, p = spot((x, y) => clear(x, y, r + 8));
     if (p) scene.disks.push({ x: p[0], y: p[1], r, t: when(), alpha: 0.4 + R() * 0.35 });
@@ -202,18 +202,18 @@ function decorate(scene: Scene, W: number, H: number, narrow: boolean, s: number
 
 /* a soft dark drop under decor, so pieces read as floating above the ground */
 const liftShadow = (ctx: CanvasRenderingContext2D, d: number) => {
-  ctx.shadowColor = "rgba(1,4,5,.75)"; ctx.shadowBlur = d * 2; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = d;
+  ctx.shadowColor = "rgba(1,5,5,.75)"; ctx.shadowBlur = d * 2; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = d;
 };
 const noShadow = (ctx: CanvasRenderingContext2D) => { ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; };
 
 function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boolean) {
   ctx.lineCap = "round"; ctx.lineJoin = "round";
-  ctx.shadowColor = "rgba(30,200,218,.5)";
+  ctx.shadowColor = "rgba(12,196,187,.5)";
   for (const st of sc.strokes) {
     const local = clamp01((T - st.start) / st.dur);
     if (local <= 0) continue;
     const upto = Math.max(2, Math.floor(local * st.pts.length));
-    ctx.globalAlpha = st.alpha; ctx.strokeStyle = st.col; ctx.shadowBlur = glow && st.col !== "#0f5560" ? 9 : 0;
+    ctx.globalAlpha = st.alpha; ctx.strokeStyle = st.col; ctx.shadowBlur = glow && st.col !== "#0b6460" ? 9 : 0;
     // smooth path in short constant-width runs (midpoint quadratic curves)
     const run = 6;
     for (let i = 1; i < upto; i += run) {
@@ -244,7 +244,7 @@ function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boole
     const r = g.r * k;
     ctx.save(); ctx.globalAlpha = g.alpha * k; ctx.translate(g.x, g.y);
     const fill = ctx.createLinearGradient(0, -r, 0, r);
-    fill.addColorStop(0, "#a6eee0"); fill.addColorStop(0.5, "#1ec8da"); fill.addColorStop(1, "#0b5f69");
+    fill.addColorStop(0, "#a2f2ee"); fill.addColorStop(0.5, "#0cc4bb"); fill.addColorStop(1, "#066e69");
     liftShadow(ctx, Math.max(3, r * 0.45));
     ctx.fillStyle = fill; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
     noShadow(ctx);
@@ -256,13 +256,13 @@ function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boole
     const k = easeOut(clamp01((T - g.t) / 0.9)); if (k <= 0) continue;
     ctx.save(); ctx.globalAlpha = g.alpha; ctx.translate(g.x, g.y); ctx.rotate(-Math.PI / 2);
     ctx.lineWidth = Math.max(2.6, g.r * 0.045);
-    ctx.shadowColor = "rgba(30,200,218,.55)"; ctx.shadowBlur = glow ? 6 : 0;
+    ctx.shadowColor = "rgba(12,196,187,.55)"; ctx.shadowBlur = glow ? 6 : 0;
     for (let i = 0; i < g.n; i++) {
-      ctx.strokeStyle = i % 2 ? "#a6eee0" : "#1ec8da";
+      ctx.strokeStyle = i % 2 ? "#a2f2ee" : "#0cc4bb";
       ctx.beginPath(); ctx.arc(0, 0, g.r * (1 - i / (g.n + 0.6)), 0, Math.PI * 2 * k * (i % 2 ? -1 : 1), i % 2 === 1); ctx.stroke();
     }
     noShadow(ctx);
-    ctx.fillStyle = "#a6eee0"; ctx.beginPath(); ctx.arc(0, 0, Math.max(1.5, g.r * 0.08) * k, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "#a2f2ee"; ctx.beginPath(); ctx.arc(0, 0, Math.max(1.5, g.r * 0.08) * k, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
   }
   // flowers in the style of Sal's reference: broad pointed petals with a slight pinwheel twist,
@@ -278,7 +278,7 @@ function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boole
     const L = b.r * k, w = b.r * 0.42 * k, n = b.giant ? 6 : 5;
     ctx.save(); ctx.globalAlpha = b.alpha; ctx.translate(b.x, b.y); ctx.rotate(b.rot + (1 - k) * 0.7);
     const fill = ctx.createRadialGradient(0, 0, L * 0.05, 0, 0, L);
-    fill.addColorStop(0, "#1d8790"); fill.addColorStop(0.25, "#5fd0cc"); fill.addColorStop(0.65, "#a8ebdf"); fill.addColorStop(1, b.col);
+    fill.addColorStop(0, "#17968f"); fill.addColorStop(0.25, "#59d6cf"); fill.addColorStop(0.65, "#a5eeeb"); fill.addColorStop(1, b.col);
     if (b.giant) {
       // back layer, larger and dimmer, offset between the front petals
       ctx.save(); ctx.rotate(Math.PI / n); ctx.globalAlpha = b.alpha * 0.55;
@@ -291,12 +291,12 @@ function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boole
     for (let p = 0; p < n; p++) { ctx.rotate((Math.PI * 2) / n); petal(L, w); ctx.fill(); }
     noShadow(ctx);
     // soft bloom of light over the petals once grown
-    ctx.shadowColor = "rgba(166,238,224,.6)"; ctx.shadowBlur = glow ? (b.giant ? 22 : 9) : 0;
-    ctx.strokeStyle = "rgba(233,255,251,.45)"; ctx.lineWidth = Math.max(0.6, b.r * 0.012);
+    ctx.shadowColor = "rgba(162,242,238,.6)"; ctx.shadowBlur = glow ? (b.giant ? 22 : 9) : 0;
+    ctx.strokeStyle = "rgba(233,255,254,.45)"; ctx.lineWidth = Math.max(0.6, b.r * 0.012);
     for (let p = 0; p < n; p++) { ctx.rotate((Math.PI * 2) / n); petal(L, w); ctx.stroke(); }
     ctx.shadowBlur = 0;
     if (b.giant) {
-      ctx.strokeStyle = "rgba(4,30,34,.55)"; ctx.lineWidth = Math.max(0.8, b.r * 0.008);
+      ctx.strokeStyle = "rgba(2,36,34,.55)"; ctx.lineWidth = Math.max(0.8, b.r * 0.008);
       for (let p = 0; p < n; p++) {
         ctx.rotate((Math.PI * 2) / n);
         for (const [len, off] of [[0.62, -0.12], [0.72, 0], [0.55, 0.14]]) {
@@ -306,13 +306,13 @@ function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boole
     }
     // stamens: thin pale filaments with round tips
     const ns = b.giant ? 9 : 6;
-    ctx.strokeStyle = "rgba(233,255,251,.8)"; ctx.fillStyle = "#e9fffb"; ctx.lineWidth = Math.max(0.6, b.r * 0.012);
+    ctx.strokeStyle = "rgba(233,255,254,.8)"; ctx.fillStyle = "#e9fffe"; ctx.lineWidth = Math.max(0.6, b.r * 0.012);
     for (let p = 0; p < ns; p++) {
       const an = (p / ns) * Math.PI * 2 + 0.4, sl = L * (0.42 + (p % 3) * 0.08);
       ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(an) * sl, Math.sin(an) * sl); ctx.stroke();
       ctx.beginPath(); ctx.arc(Math.cos(an) * sl, Math.sin(an) * sl, Math.max(1.2, b.r * 0.035), 0, Math.PI * 2); ctx.fill();
     }
-    ctx.fillStyle = "#d9fff6"; ctx.strokeStyle = "#0b4f57"; ctx.lineWidth = Math.max(0.8, b.r * 0.02);
+    ctx.fillStyle = "#d9fffd"; ctx.strokeStyle = "#075b57"; ctx.lineWidth = Math.max(0.8, b.r * 0.02);
     ctx.beginPath(); ctx.arc(0, 0, Math.max(2, b.r * 0.1), 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     ctx.restore();
   }
@@ -320,7 +320,7 @@ function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boole
     const k = easeOut(clamp01((T - st.t) / 0.5)); if (k <= 0) continue;
     const r = st.r * k;
     ctx.save(); ctx.globalAlpha = st.alpha * k; ctx.translate(st.x, st.y);
-    ctx.fillStyle = "#e9fffb"; ctx.shadowColor = "rgba(166,238,224,.8)"; ctx.shadowBlur = glow ? 5 : 0;
+    ctx.fillStyle = "#e9fffe"; ctx.shadowColor = "rgba(162,242,238,.8)"; ctx.shadowBlur = glow ? 5 : 0;
     ctx.beginPath(); // four-point twinkle
     ctx.moveTo(0, -r); ctx.quadraticCurveTo(0, 0, r, 0); ctx.quadraticCurveTo(0, 0, 0, r);
     ctx.quadraticCurveTo(0, 0, -r, 0); ctx.quadraticCurveTo(0, 0, 0, -r); ctx.fill();

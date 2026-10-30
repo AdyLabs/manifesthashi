@@ -3,6 +3,7 @@ import type { Ref } from "react";
 import type { VinesHandle } from "../boot";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { Vines } from "./Vines";
+import { Halftone } from "./Halftone";
 import { APPLE_IN_OUT, CSS_EASE, DUR, STAGGER } from "../motion";
 import type { Piece } from "../data";
 
@@ -15,7 +16,7 @@ function Sparkle({ className, delay }: { className: string; delay: number }) {
         animationDelay: `${delay}s`,
         background:
           "radial-gradient(circle,#fff 0 1.5px,transparent 2.5px),linear-gradient(90deg,transparent 45%,#fff 50%,transparent 55%),linear-gradient(0deg,transparent 45%,#fff 50%,transparent 55%)",
-        filter: "drop-shadow(0 0 4px #a6eee0)",
+        filter: "drop-shadow(0 0 4px #a2f2ee)",
       }}
     />
   );
@@ -43,9 +44,11 @@ export function Hero({ pair, onOpen, vines }: { pair: [Piece, Piece]; onOpen: (p
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(90% 80% at 80% 30%, rgba(30,200,218,.16), transparent 60%), radial-gradient(70% 70% at 0% 100%, rgba(11,46,51,.85), transparent 60%)",
+            "radial-gradient(90% 80% at 80% 30%, rgba(12,196,187,.16), transparent 60%), radial-gradient(70% 70% at 0% 100%, rgba(9,53,51,.85), transparent 60%)",
         }}
       />
+      <Halftone at={[1.02, -0.06]} reach={0.42} />
+      <Halftone at={[-0.03, 1.06]} reach={0.36} />
       <motion.div aria-hidden="true" className="absolute inset-0" style={{ y: vineY }}>
         <Vines handle={vines} />
       </motion.div>
