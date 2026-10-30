@@ -74,6 +74,11 @@ design/
 - Icons from Phosphor only. No emoji. No em dashes anywhere in site copy.
 - Content stays visible at rest: scroll reveals move elements in from a visible state, never from opacity 0.
 - Everything respects `prefers-reduced-motion`.
+- **Accessibility floor** (audited Oct 30 with axe-core, WCAG 2.2 AA + best practice: 0 violations on desktop and phone,
+  viewer open and closed). Keep it there: every control's tap area is at least 44x44 (use the `.hit` class for small
+  visual controls, or size the button itself); the fake address bar is `aria-hidden`; a "Skip to the shop" link is the
+  first tab stop; pixel-font labels are 12px minimum (11px only for the decorative footer badges); decor canvases and
+  lace are `aria-hidden`. The viewer supports swipe between paintings on touch screens.
 - Shop grid is always 2 columns and capped at 760px wide on desktop (Sal asked for smaller tiles).
 
 ## Motion

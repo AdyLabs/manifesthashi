@@ -97,7 +97,7 @@ export function Hero({ pair, onOpen, vines }: { pair: [Piece, Piece]; onOpen: (p
                 alt={p.alt}
                 className="canvas-shadow block h-auto max-h-[300px] w-auto max-w-full sm:max-h-[420px] lg:max-h-[min(470px,62vh)]"
               />
-              <span className="mt-3 block font-pixel text-[11px] text-chrome transition-colors duration-500 [text-shadow:0_0_4px_#07090b,0_0_10px_#07090b,0_0_18px_#07090b] group-hover:text-aqua">{p.title}</span>
+              <span className="mt-3 block font-pixel text-[12px] text-chrome transition-colors duration-500 [text-shadow:0_0_4px_#07090b,0_0_10px_#07090b,0_0_18px_#07090b] group-hover:text-aqua">{p.title}</span>
             </motion.button>
           ))}
         </motion.div>

@@ -33,7 +33,7 @@ function Footer() {
         </div>
         <div className="flex flex-wrap gap-2">
           {["best viewed at 1024×768", "© 2026 manifesthashi"].map((b) => (
-            <span key={b} className="rounded-[2px] border border-[#39454a] bg-gradient-to-b from-[#141d1d] to-[#0a0f0f] px-2 py-1 font-pixel text-[10px] text-chrome">{b}</span>
+            <span key={b} className="rounded-[2px] border border-[#39454a] bg-gradient-to-b from-[#141d1d] to-[#0a0f0f] px-2 py-1 font-pixel text-[11px] text-chrome">{b}</span>
           ))}
         </div>
       </div>
@@ -74,6 +74,7 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user">
+      <a href="#shop" className="skip btn btn-gloss">Skip to the shop</a>
       <TopBar saved={saved.size} />
       <main>
         <Hero pair={[pieces[0], pieces[1]]} onOpen={setOpen} vines={vines} />

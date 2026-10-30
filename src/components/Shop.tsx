@@ -48,13 +48,13 @@ function Card({ p, i, saved, onToggle, onOpen }: { p: Piece; i: number; saved: b
           whileTap={reduce ? undefined : { scale: 0.86 }}
           animate={reduce ? undefined : saved ? { scale: [1, 1.14, 1] } : { scale: 1 }}
           transition={{ duration: 0.45, ease: APPLE_IN_OUT }}
-          className={`orb absolute right-2 top-2 h-8 w-8 cursor-pointer sm:right-3 sm:top-3 sm:h-9 sm:w-9 ${saved ? "orb-on" : ""}`}
+          className={`orb hit absolute right-2 top-2 h-9 w-9 cursor-pointer sm:right-3 sm:top-3 ${saved ? "orb-on" : ""}`}
         >
           <HeartIcon weight={saved ? "fill" : "regular"} className="h-[52%] w-[52%]" aria-hidden="true" />
         </motion.button>
       </div>
       <div className="grid min-w-0 gap-0.5 px-0.5 pt-3">
-        <span className={`font-pixel text-[11px] ${p.status === "wip" ? "text-chrome/70" : "text-aqua"}`}>{p.tag}</span>
+        <span className={`font-pixel text-[12px] ${p.status === "wip" ? "text-chrome/70" : "text-aqua"}`}>{p.tag}</span>
         <span className="text-[0.92rem] font-semibold leading-snug sm:text-[1rem]">{p.title}</span>
         <span className="text-[0.82rem] text-mute sm:text-[0.92rem]">{p.medium}</span>
         <span className="mt-1 text-[0.92rem] font-bold sm:text-[1rem]">{p.price}</span>
@@ -90,7 +90,7 @@ export function Shop({
             type="button"
             aria-pressed={filter === t.id}
             onClick={() => setFilter(t.id)}
-            className={`relative cursor-pointer whitespace-nowrap border-0 bg-transparent px-3 pb-2.5 pt-2 font-display text-[0.8rem] font-bold transition-colors ${filter === t.id ? "text-ink" : "text-mute hover:text-ink"}`}
+            className={`relative cursor-pointer whitespace-nowrap border-0 bg-transparent px-3 py-3 font-display text-[0.8rem] font-bold transition-colors ${filter === t.id ? "text-ink" : "text-mute hover:text-ink"}`}
           >
             {t.label}
             {t.id === "saved" && saved.size > 0 && <span className="ml-1.5 font-pixel text-[11px] text-aqua">{saved.size}</span>}

@@ -146,5 +146,18 @@
   }
 }
 
+/* invisible 44x44 tap area around small controls (WCAG 2.5.8); the visible size stays as designed */
+.hit { position: relative; }
+.orb.hit, .winbtn.hit { position: relative; }
+.hit::after {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%);
+}
+.orb.absolute.hit { position: absolute; }
+
+/* skip link: hidden until a keyboard user tabs to it */
+.skip { position: fixed; left: max(12px, env(safe-area-inset-left, 0px)); top: calc(env(safe-area-inset-top, 0px) + 8px); z-index: 60; transform: translateY(-160%); }
+.skip:focus-visible { transform: none; }
+
 @keyframes twinkle { 0%,100% { opacity: .15; transform: scale(.6) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(45deg); } }
 @keyframes blink { 50% { opacity: .3; } }

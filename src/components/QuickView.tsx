@@ -25,12 +25,14 @@ export function QuickView({
         >
           {piece && (
             <>
-              <div className="titlebar flex items-center justify-between gap-3 py-1.5 pl-3 pr-2">
+              <div className="titlebar flex items-center justify-between gap-3 py-3 pl-3 pr-1 md:py-1.5 md:pr-2">
                 <span className="truncate font-pixel text-[12px] text-white [text-shadow:0_1px_0_#025753]">{piece.file}</span>
-                <div className="flex shrink-0 gap-1">
+                <div className="flex shrink-0 items-center gap-1">
                   <span className="winbtn" aria-hidden="true"><span className="mb-1 block h-[2px] w-2 self-end bg-current" /></span>
-                  <Dialog.Close className="winbtn winbtn-close cursor-pointer" aria-label="Close">
-                    <XIcon size={12} weight="bold" aria-hidden="true" />
+                  {/* the visible close button is a small window control; the tappable area is a full 44px,
+                      sized to fit inside the title bar so nothing clips it */}
+                  <Dialog.Close className="-my-3 grid h-11 w-11 cursor-pointer place-items-center border-0 bg-transparent p-0 md:-my-1.5 md:h-8 md:w-8" aria-label="Close">
+                    <span className="winbtn winbtn-close"><XIcon size={12} weight="bold" aria-hidden="true" /></span>
                   </Dialog.Close>
                 </div>
               </div>
@@ -43,11 +45,15 @@ export function QuickView({
                     initial={reduce ? false : { opacity: 0, scale: 0.97 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.7, ease: APPLE_IN_OUT }}
-                    className="canvas-shadow max-h-[64dvh] max-w-full object-contain"
+                    drag={reduce ? false : "x"}
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.35}
+                    onDragEnd={(_, info) => { if (info.offset.x < -60) go(1); else if (info.offset.x > 60) go(-1); }}
+                    className="canvas-shadow max-h-[64dvh] max-w-full touch-pan-y object-contain"
                   />
                 </div>
                 <div className="grid content-start gap-3 p-5 md:p-8">
-                  <span className={`font-pixel text-[11px] ${piece.status === "wip" ? "text-chrome/70" : "text-aqua"}`}>{piece.tag}</span>
+                  <span className={`font-pixel text-[12px] ${piece.status === "wip" ? "text-chrome/70" : "text-aqua"}`}>{piece.tag}</span>
                   <Dialog.Title className="m-0 font-display text-[1.9rem] font-bold leading-[1.05]">{piece.title}</Dialog.Title>
                   <Dialog.Description className="m-0 text-mute">{piece.medium}</Dialog.Description>
                   <p className="m-0 text-xl font-bold">{piece.price}</p>
@@ -64,9 +70,9 @@ export function QuickView({
                     </button>
                   </div>
                   <div className="mt-6 flex items-center gap-2 border-t border-line pt-4">
-                    <button type="button" onClick={() => go(-1)} className="orb h-9 w-9 cursor-pointer" aria-label="Previous piece"><CaretLeftIcon size={15} weight="bold" aria-hidden="true" /></button>
-                    <button type="button" onClick={() => go(1)} className="orb h-9 w-9 cursor-pointer" aria-label="Next piece"><CaretRightIcon size={15} weight="bold" aria-hidden="true" /></button>
-                    <span className="ml-2 text-sm text-mute">More from the shop</span>
+                    <button type="button" onClick={() => go(-1)} className="orb hit h-11 w-11 shrink-0 cursor-pointer" aria-label="Previous piece"><CaretLeftIcon size={15} weight="bold" aria-hidden="true" /></button>
+                    <button type="button" onClick={() => go(1)} className="orb hit h-11 w-11 shrink-0 cursor-pointer" aria-label="Next piece"><CaretRightIcon size={15} weight="bold" aria-hidden="true" /></button>
+                    <span className="ml-2 text-sm text-mute">More from the shop<span className="md:hidden">, or swipe</span></span>
                   </div>
                 </div>
               </div>

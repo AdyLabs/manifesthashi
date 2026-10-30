@@ -15,7 +15,7 @@ const BUDGETS = ["Not sure", "Under $100", "$100 to $250", "$250 to $500", "$500
 type Errors = Partial<Record<"name" | "contact" | "idea" | "refs", string>>;
 
 function Label({ htmlFor, children }: { htmlFor: string; children: ReactNode }) {
-  return <label htmlFor={htmlFor} className="font-pixel text-[11px] text-chrome">{children}</label>;
+  return <label htmlFor={htmlFor} className="font-pixel text-[12px] text-chrome">{children}</label>;
 }
 function Err({ id, msg }: { id: string; msg?: string }) {
   return <p id={id} className="m-0 min-h-[1.1em] text-[13px] text-danger" aria-live="polite">{msg ?? ""}</p>;

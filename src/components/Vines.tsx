@@ -118,8 +118,10 @@ function build(W: number, H: number): Scene {
 function decorate(scene: Scene, W: number, H: number, narrow: boolean, s: number) {
   const R = rng(1987);
   const end = scene.end;
-  const copy = narrow ? [0.0, 0.06, 1.0, 0.46] : [0.07, 0.2, 0.5, 0.82];
-  const art = narrow ? [0.0, 0.47, 1.0, 0.97] : [0.52, 0.06, 0.93, 0.94];
+  // on phones the paintings sit behind the canvas anyway, so decor may run behind them and peek out
+  // around their tilted edges; the copy zone stops short of the right edge so that strip can fill too
+  const copy = narrow ? [0.0, 0.06, 0.86, 0.48] : [0.07, 0.2, 0.5, 0.82];
+  const art = narrow ? [2, 2, 2, 2] : [0.52, 0.06, 0.93, 0.94];
   const inside = (r: number[], x: number, y: number, pad: number) => x > r[0] * W - pad && x < r[2] * W + pad && y > r[1] * H - pad && y < r[3] * H + pad;
   const onCanvas = (x: number, y: number, pad: number) => x > pad && x < W - pad && y > pad && y < H - pad;
   const clear = (x: number, y: number, pad: number) => onCanvas(x, y, pad) && !inside(copy, x, y, pad) && !inside(art, x, y, pad);
@@ -150,7 +152,7 @@ function decorate(scene: Scene, W: number, H: number, narrow: boolean, s: number
   }
   // a few standalone flowers in the open space the vines don't reach (top band, bottom middle,
   // the gap between copy and paintings), so flowers sit across the whole hero like the reference
-  for (let i = 0; i < (narrow ? 2 : 5); i++) {
+  for (let i = 0; i < (narrow ? 5 : 5); i++) {
     const r = (28 + R() * 10) * s, p = spot((x, y) => clear(x, y, r * 0.9) && roomFor(x, y, r * 1.4));
     if (p) scene.blooms.push({ x: p[0], y: p[1], r, rot: R() * Math.PI, col: "#bcf8f5", t: when(), alpha: 0.9 });
   }
@@ -183,18 +185,18 @@ function decorate(scene: Scene, W: number, H: number, narrow: boolean, s: number
   const big = (narrow ? 92 : 165) * s;
   scene.rings.push({ x: W * 0.985, y: H * 0.04, r: big, n: 7, t: end * 0.4, alpha: 0.6 });
   scene.rings.push({ x: W * 0.015, y: H * 0.96, r: big, n: 7, t: end * 0.5, alpha: 0.6, front: true }); // drawn over the giant flower (Sal)
-  for (let i = 0; i < (narrow ? 5 : 12); i++) {
+  for (let i = 0; i < (narrow ? 8 : 12); i++) {
     const r = (6 + R() * 8) * s, p = spot((x, y) => clear(x, y, r + 6) && Math.hypot(x - W * 0.985, y - H * 0.04) > big + r && Math.hypot(x - W * 0.015, y - H * 0.96) > big + r);
     if (p) scene.rings.push({ x: p[0], y: p[1], r, n: 3, t: when(), alpha: 0.45 + R() * 0.3 });
   }
   // the giant corner flower, sitting in front of the bottom-left spiral like the reference
-  scene.blooms.push({ x: W * (narrow ? 0.08 : 0.066), y: H * (narrow ? 0.97 : 0.875), r: (narrow ? 95 : 150) * s, rot: -0.35, col: "#bcf8f5", t: end * 0.55, alpha: 1, giant: true });
-  for (let i = 0; i < (narrow ? 4 : 10); i++) {
+  scene.blooms.push({ x: W * (narrow ? 1.0 : 0.066), y: H * (narrow ? 0.5 : 0.875), r: (narrow ? 95 : 150) * s, rot: narrow ? 0.2 : -0.35, col: "#bcf8f5", t: end * 0.55, alpha: 1, giant: true });
+  for (let i = 0; i < (narrow ? 6 : 10); i++) {
     const r = (5 + R() * 15) * s, p = spot((x, y) => clear(x, y, r + 8));
     if (p) scene.disks.push({ x: p[0], y: p[1], r, t: when(), alpha: 0.4 + R() * 0.35 });
   }
   // tiny stars everywhere except over the copy
-  for (let i = 0; i < (narrow ? 22 : 55); i++) {
+  for (let i = 0; i < (narrow ? 36 : 55); i++) {
     const p = spot((x, y) => onCanvas(x, y, 4) && !inside(copy, x, y, 6));
     if (p) scene.stars.push({ x: p[0], y: p[1], r: (2 + R() * 3.5) * s, t: end * (0.2 + R() * 0.8), alpha: 0.5 + R() * 0.5 });
   }
