@@ -49,8 +49,8 @@ export function Commissions({ prefill }: { prefill: Prefill }) {
     e.preventDefault();
     const next: Errors = {};
     if (!name.trim()) next.name = "Add your name so Sal knows who's asking.";
-    if (!contact.trim()) next.contact = "Add an email or Instagram handle so she can reply.";
-    else if (!/@/.test(contact)) next.contact = "Use an email (you@site.com) or a handle that starts with @.";
+    if (!contact.trim()) next.contact = "Add an email or TikTok handle so she can reply.";
+    else if (!/@/.test(contact)) next.contact = "Use an email (you@site.com) or a TikTok handle that starts with @.";
     if (!idea.trim()) next.idea = "Describe what you want painted, even roughly.";
     if (files.length > 5) next.refs = "Pick your best five reference photos.";
     setErrors(next);
@@ -152,8 +152,8 @@ export function Commissions({ prefill }: { prefill: Prefill }) {
                       <Err id="e-name" msg={errors.name} />
                     </div>
                     <div className="grid min-w-0 gap-1.5">
-                      <Label htmlFor="f-contact">email or instagram</Label>
-                      <input {...fieldProps("contact")} className="field" placeholder="email or @handle" value={contact} onChange={(e) => setContact(e.target.value)} />
+                      <Label htmlFor="f-contact">email or tiktok</Label>
+                      <input {...fieldProps("contact")} className="field" placeholder="email or @tiktok" value={contact} onChange={(e) => setContact(e.target.value)} />
                       <Err id="e-contact" msg={errors.contact} />
                     </div>
                   </div>
@@ -199,7 +199,7 @@ export function Commissions({ prefill }: { prefill: Prefill }) {
                 <motion.div key="done" className="grid gap-4"
                   initial={reduce ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={reduce ? undefined : { opacity: 0 }} transition={{ duration: 0.7, ease: APPLE_IN_OUT }}>
                   <p className="m-0 font-pixel text-[12px] text-aqua">request ready</p>
-                  <p className="m-0">Copy this and send it to Sal at <span className="ph">sal's email or @handle</span> so she has everything in one message.</p>
+                  <p className="m-0">Copy this and send it to Sal at <span className="ph">sal's email or @tiktok</span> so she has everything in one message.</p>
                   <pre ref={preRef} className="m-0 max-h-[260px] overflow-auto whitespace-pre-wrap break-words rounded-ctl border border-[#2b4241] bg-[#050909] p-3 font-display text-[12px] leading-relaxed text-aqua">{summary}</pre>
                   <div className="flex flex-wrap gap-3">
                     <button type="button" className="btn btn-gloss" onClick={copy}>

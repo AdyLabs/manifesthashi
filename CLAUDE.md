@@ -96,7 +96,7 @@ Values in `src/motion.ts`. Apple's site was inspected (captured Oct 2026):
 - [x] **Logo:** classic blackletter (UnifrakturMaguntia) for the wordmark; Silkscreen for site headings.
 - [ ] **Painting titles** are invented placeholders: Melt, Pour No. 1, Candy Static, Blue Hour (`paintings.json`).
 - [ ] **Prices** show "Inquire". Commission tiers show `$__` (`Commissions.tsx`).
-- [ ] **Sal's contact** (email or Instagram) is a placeholder in the form's success state.
+- [ ] **Sal's contact** (email or TikTok) is a placeholder in the form's success state.
 - [ ] **The form does not send anything.** It builds a summary people copy. For real delivery, wire it to Formspree or similar.
 - [ ] **Blue Hour** photo is blurry and the painting looks unfinished. It is labeled "in progress". Reshoot or replace.
 - [ ] Reshoot all paintings flat, front-on, in daylight. Current images were straightened from angled wall photos.
