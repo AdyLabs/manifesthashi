@@ -23,7 +23,7 @@ const easeOut = (x: number) => 1 - Math.pow(1 - x, 3);
 
 type Stroke = { pts: [number, number, number][]; start: number; dur: number; col: string; alpha: number };
 type Leaf = { x: number; y: number; ang: number; L: number; col: string; t: number; alpha: number };
-type Bloom = { x: number; y: number; r: number; rot: number; col: string; t: number; alpha: number };
+type Bloom = { x: number; y: number; r: number; rot: number; col: string; t: number; alpha: number; giant?: boolean };
 type Dot = { x: number; y: number; r: number; col: string; t: number; alpha: number };
 type Ring = { x: number; y: number; r: number; n: number; t: number; alpha: number };
 type Disk = { x: number; y: number; r: number; t: number; alpha: number };
@@ -109,8 +109,8 @@ function build(W: number, H: number): Scene {
 }
 
 /*
-  Scene-era decor, from Sal's notes: lilies along the vines and at every swirl tip, each lily
-  sending out curling tendrils with leaves; rings within rings (two big ones in the top-right and
+  Scene-era decor, from Sal's notes: wallpaper-style flowers at every swirl tip and along the vines,
+  each sending out curling tendrils with leaves, plus one giant flower in the bottom-left corner; rings within rings (two big ones in the top-right and
   bottom-left corners, small ones throughout); floating glossy disks; tiny stars.
   Own seed, so the vine layout above stays exactly as it was. Decor keeps clear of the hero copy
   and the two paintings; corners and stars are allowed anywhere but the copy.
@@ -132,22 +132,29 @@ function decorate(scene: Scene, W: number, H: number, narrow: boolean, s: number
   };
   const when = () => end * (0.35 + R() * 0.6);
 
-  // lilies on the front stems, plus one at every swirl tip
+  // flowers in the 2008 wallpaper style Sal sent: one at every swirl tip, a few more along the
+  // stems, spaced so neighbours never pile up
+  const roomFor = (x: number, y: number, r: number) => scene.blooms.every((b) => Math.hypot(b.x - x, b.y - y) > (b.r + r) * 0.85);
   for (const st of [...scene.strokes]) {
-    if (st.col === "#0f5560") continue;
-    for (let k = 0; k < 3; k++) {
-      const i = Math.floor(st.pts.length * (0.25 + R() * 0.6));
-      const [x, y] = st.pts[i];
-      if (R() < 0.55 && clear(x, y, 10)) {
-        scene.blooms.push({ x, y, r: (13 + R() * 6) * s, rot: R() * Math.PI, col: R() < 0.5 ? "#a6eee0" : "#e9fffb", t: st.start + (i / st.pts.length) * st.dur, alpha: st.alpha });
-      }
-    }
+    const back = st.col === "#0f5560"; // faint back-layer vines get flowers too, so the left side isn't bare
     const [tx, ty] = st.pts[st.pts.length - 1];
-    if (!scene.blooms.some((b) => Math.hypot(b.x - tx, b.y - ty) < 8)) {
-      scene.blooms.push({ x: tx, y: ty, r: (16 + R() * 6) * s, rot: R() * Math.PI, col: "#a6eee0", t: st.start + st.dur, alpha: st.alpha });
+    const tr = (back ? 26 : 32) * s + R() * 10 * s;
+    if (roomFor(tx, ty, tr)) {
+      scene.blooms.push({ x: tx, y: ty, r: tr, rot: R() * Math.PI, col: "#a6eee0", t: st.start + st.dur, alpha: Math.min(1, st.alpha * 1.25) });
+    }
+    const i = Math.floor(st.pts.length * (0.3 + R() * 0.5));
+    const [x, y] = st.pts[i], r = (24 + R() * 10) * s;
+    if (R() < 0.7 && clear(x, y, r * 0.6) && roomFor(x, y, r)) {
+      scene.blooms.push({ x, y, r, rot: R() * Math.PI, col: "#bff5ea", t: st.start + (i / st.pts.length) * st.dur, alpha: Math.min(1, st.alpha * 1.25) });
     }
   }
-  // each lily branches out: two wavy tendrils that curl into a spiral, with a pair of leaves
+  // a few standalone flowers in the open space the vines don't reach (top band, bottom middle,
+  // the gap between copy and paintings), so flowers sit across the whole hero like the reference
+  for (let i = 0; i < (narrow ? 2 : 5); i++) {
+    const r = (28 + R() * 10) * s, p = spot((x, y) => clear(x, y, r * 0.9) && roomFor(x, y, r * 1.4));
+    if (p) scene.blooms.push({ x: p[0], y: p[1], r, rot: R() * Math.PI, col: "#bff5ea", t: when(), alpha: 0.9 });
+  }
+  // each flower branches out: two wavy tendrils that curl into a spiral, with a pair of leaves
   for (const b of [...scene.blooms]) {
     if (inside(copy, b.x, b.y, 0)) continue;
     for (let k = 0; k < 2; k++) {
@@ -180,6 +187,8 @@ function decorate(scene: Scene, W: number, H: number, narrow: boolean, s: number
     const r = (6 + R() * 8) * s, p = spot((x, y) => clear(x, y, r + 6) && Math.hypot(x - W * 0.985, y - H * 0.04) > big + r && Math.hypot(x - W * 0.015, y - H * 0.96) > big + r);
     if (p) scene.rings.push({ x: p[0], y: p[1], r, n: 3, t: when(), alpha: 0.45 + R() * 0.3 });
   }
+  // the giant corner flower, sitting in front of the bottom-left spiral like the reference
+  scene.blooms.push({ x: W * 0.01, y: H * 1.02, r: (narrow ? 95 : 150) * s, rot: -0.35, col: "#bff5ea", t: end * 0.55, alpha: 1, giant: true });
   for (let i = 0; i < (narrow ? 4 : 10); i++) {
     const r = (5 + R() * 15) * s, p = spot((x, y) => clear(x, y, r + 8));
     if (p) scene.disks.push({ x: p[0], y: p[1], r, t: when(), alpha: 0.4 + R() * 0.35 });
@@ -256,61 +265,55 @@ function render(ctx: CanvasRenderingContext2D, sc: Scene, T: number, glow: boole
     ctx.fillStyle = "#a6eee0"; ctx.beginPath(); ctx.arc(0, 0, Math.max(1.5, g.r * 0.08) * k, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
   }
-  // lilies, drawn like the real flower seen from above: three broad back tepals, three front
-  // tepals, each shaded from a dark throat to a pale recurved tip, with a midrib, freckles near
-  // the throat, a pale rim, six long curved stamens and a three-lobed pistil
-  const tepal = (L: number, w: number) => {
+  // flowers in the style of Sal's reference: broad pointed petals with a slight pinwheel twist,
+  // dark teal at the throat fading to pale mint at the edge, a soft glow, a pale centre and long
+  // stamens with dot tips. The giant corner flower adds a second petal layer and dark streaks.
+  const petal = (L: number, w: number) => {
     ctx.beginPath(); ctx.moveTo(0, 0);
-    ctx.bezierCurveTo(L * 0.28, -w * 1.05, L * 0.76, -w * 0.95, L * 0.98, -w * 0.2);
-    ctx.quadraticCurveTo(L * 1.08, w * 0.1, L * 0.9, w * 0.34); // tip curls back
-    ctx.bezierCurveTo(L * 0.72, w, L * 0.28, w * 1.05, 0, 0);
+    ctx.bezierCurveTo(L * 0.12, -w * 1.15, L * 0.78, -w * 1.05, L, -w * 0.08);
+    ctx.bezierCurveTo(L * 0.72, w * 0.62, L * 0.22, w * 0.7, 0, 0);
   };
   for (const b of sc.blooms) {
-    const k = easeOut(clamp01((T - b.t) / 0.8)); if (k <= 0) continue;
-    const L = b.r * 1.4 * k, w = b.r * 0.4 * k;
-    ctx.save(); ctx.globalAlpha = b.alpha; ctx.translate(b.x, b.y); ctx.rotate(b.rot + (1 - k) * 0.9);
-    const shade = (light: string, mid: string) => {
-      const g = ctx.createLinearGradient(0, 0, L, 0);
-      g.addColorStop(0, "#073a40"); g.addColorStop(0.28, mid); g.addColorStop(0.75, light); g.addColorStop(1, "#f2fffd");
-      return g;
-    };
-    // back tepals: broader, a little shorter and darker, on a soft drop shadow
-    liftShadow(ctx, Math.max(2, b.r * 0.28));
-    ctx.fillStyle = shade("#7fdfe0", "#0f8d9b");
-    for (let p = 0; p < 3; p++) { ctx.rotate((Math.PI * 2) / 3); tepal(L * 0.9, w * 1.15); ctx.fill(); }
+    const k = easeOut(clamp01((T - b.t) / (b.giant ? 1.1 : 0.8))); if (k <= 0) continue;
+    const L = b.r * k, w = b.r * 0.42 * k, n = b.giant ? 6 : 5;
+    ctx.save(); ctx.globalAlpha = b.alpha; ctx.translate(b.x, b.y); ctx.rotate(b.rot + (1 - k) * 0.7);
+    const fill = ctx.createRadialGradient(0, 0, L * 0.05, 0, 0, L);
+    fill.addColorStop(0, "#1d8790"); fill.addColorStop(0.25, "#5fd0cc"); fill.addColorStop(0.65, "#a8ebdf"); fill.addColorStop(1, b.col);
+    if (b.giant) {
+      // back layer, larger and dimmer, offset between the front petals
+      ctx.save(); ctx.rotate(Math.PI / n); ctx.globalAlpha = b.alpha * 0.55;
+      liftShadow(ctx, b.r * 0.06); ctx.fillStyle = fill;
+      for (let p = 0; p < n; p++) { ctx.rotate((Math.PI * 2) / n); petal(L * 1.08, w * 1.05); ctx.fill(); }
+      noShadow(ctx); ctx.restore();
+    }
+    liftShadow(ctx, Math.max(2, b.r * 0.12));
+    ctx.fillStyle = fill;
+    for (let p = 0; p < n; p++) { ctx.rotate((Math.PI * 2) / n); petal(L, w); ctx.fill(); }
     noShadow(ctx);
-    // front tepals
-    ctx.rotate(Math.PI / 3 + 0.06);
-    ctx.fillStyle = shade(b.col, "#18b3c3");
-    ctx.shadowColor = "rgba(166,238,224,.55)"; ctx.shadowBlur = glow ? 7 : 0;
-    for (let p = 0; p < 3; p++) { ctx.rotate((Math.PI * 2) / 3); tepal(L, w); ctx.fill(); }
+    // soft bloom of light over the petals once grown
+    ctx.shadowColor = "rgba(166,238,224,.6)"; ctx.shadowBlur = glow ? (b.giant ? 22 : 9) : 0;
+    ctx.strokeStyle = "rgba(233,255,251,.45)"; ctx.lineWidth = Math.max(0.6, b.r * 0.012);
+    for (let p = 0; p < n; p++) { ctx.rotate((Math.PI * 2) / n); petal(L, w); ctx.stroke(); }
     ctx.shadowBlur = 0;
-    for (let p = 0; p < 3; p++) {
-      ctx.rotate((Math.PI * 2) / 3);
-      tepal(L, w); ctx.strokeStyle = "rgba(242,255,253,.6)"; ctx.lineWidth = 0.7; ctx.stroke(); // rim
-      ctx.strokeStyle = "rgba(7,58,64,.55)"; ctx.lineWidth = Math.max(0.7, b.r * 0.05); // midrib
-      ctx.beginPath(); ctx.moveTo(L * 0.12, 0); ctx.quadraticCurveTo(L * 0.55, -w * 0.1, L * 0.86, w * 0.02); ctx.stroke();
-      ctx.fillStyle = "rgba(7,58,64,.7)"; // freckles near the throat
-      for (const [fx, fy] of [[0.24, -0.32], [0.33, 0.28], [0.4, -0.18], [0.3, 0.05], [0.46, 0.2]]) {
-        ctx.beginPath(); ctx.arc(L * fx, w * fy, Math.max(0.6, b.r * 0.045), 0, Math.PI * 2); ctx.fill();
+    if (b.giant) {
+      ctx.strokeStyle = "rgba(4,30,34,.55)"; ctx.lineWidth = Math.max(0.8, b.r * 0.008);
+      for (let p = 0; p < n; p++) {
+        ctx.rotate((Math.PI * 2) / n);
+        for (const [len, off] of [[0.62, -0.12], [0.72, 0], [0.55, 0.14]]) {
+          ctx.beginPath(); ctx.moveTo(L * 0.08, 0); ctx.quadraticCurveTo(L * len * 0.5, w * off * 1.4, L * len, w * off); ctx.stroke();
+        }
       }
     }
-    // stamens curve outward; anthers sit across the filament tips
-    ctx.lineWidth = Math.max(0.6, b.r * 0.035);
-    for (let p = 0; p < 6; p++) {
-      const an = (p / 6) * Math.PI * 2 + 0.3, sl = L * 0.78, bend = 0.22;
-      const ex = Math.cos(an) * sl, ey = Math.sin(an) * sl;
-      ctx.strokeStyle = "rgba(233,255,251,.85)";
-      ctx.beginPath(); ctx.moveTo(0, 0);
-      ctx.quadraticCurveTo(Math.cos(an + bend) * sl * 0.5, Math.sin(an + bend) * sl * 0.5, ex, ey); ctx.stroke();
-      ctx.fillStyle = "#0b2e33";
-      ctx.beginPath(); ctx.ellipse(ex, ey, Math.max(1, b.r * 0.13), Math.max(0.6, b.r * 0.05), an + Math.PI / 2, 0, Math.PI * 2); ctx.fill();
+    // stamens: thin pale filaments with round tips
+    const ns = b.giant ? 9 : 6;
+    ctx.strokeStyle = "rgba(233,255,251,.8)"; ctx.fillStyle = "#e9fffb"; ctx.lineWidth = Math.max(0.6, b.r * 0.012);
+    for (let p = 0; p < ns; p++) {
+      const an = (p / ns) * Math.PI * 2 + 0.4, sl = L * (0.42 + (p % 3) * 0.08);
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(an) * sl, Math.sin(an) * sl); ctx.stroke();
+      ctx.beginPath(); ctx.arc(Math.cos(an) * sl, Math.sin(an) * sl, Math.max(1.2, b.r * 0.035), 0, Math.PI * 2); ctx.fill();
     }
-    ctx.fillStyle = "#a6eee0"; // pistil
-    for (let p = 0; p < 3; p++) {
-      const an = (p / 3) * Math.PI * 2;
-      ctx.beginPath(); ctx.arc(Math.cos(an) * b.r * 0.08, Math.sin(an) * b.r * 0.08, Math.max(0.8, b.r * 0.07), 0, Math.PI * 2); ctx.fill();
-    }
+    ctx.fillStyle = "#d9fff6"; ctx.strokeStyle = "#0b4f57"; ctx.lineWidth = Math.max(0.8, b.r * 0.02);
+    ctx.beginPath(); ctx.arc(0, 0, Math.max(2, b.r * 0.1), 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     ctx.restore();
   }
   for (const st of sc.stars) {
